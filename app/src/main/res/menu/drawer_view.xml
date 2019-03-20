@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/orders"
+            android:icon="@drawable/ic_orders_24dp"
+            android:title="@string/Orders" />
+        <item
+            android:id="@+id/customers"
+            android:icon="@drawable/ic_people_black_24dp"
+            android:title="@string/Customers" />
+        <item
+            android:id="@+id/calendar"
+            android:icon="@drawable/ic_calendar_black_24dp"
+            android:title="@string/Calendar" />
+        <item
+            android:id="@+id/plans"
+            android:icon="@drawable/ic_note_black_24dp"
+            android:title="@string/Plans" />
+    </group>
+
+</menu>

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">BusinessPlanner</string>
+    <string name="Orders">My orders</string>
+    <string name="Customers">Customers</string>
+    <string name="Calendar">Calendar</string>
+    <string name="Plans">My plans</string>
+    <string name="business_planner">Business Planner</string>
 </resources>
