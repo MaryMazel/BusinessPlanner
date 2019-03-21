@@ -29,7 +29,8 @@ public class PlansListAdapter extends RecyclerView.Adapter<PlansListAdapter.View
             }
         });
 
-        return viewHolder;    }
+        return viewHolder;
+    }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
@@ -45,7 +46,7 @@ public class PlansListAdapter extends RecyclerView.Adapter<PlansListAdapter.View
         final TextView title;
         final TextView note;
 
-        ViewHolder(View view){
+        ViewHolder(View view) {
             super(view);
             title = view.findViewById(R.id.title);
             note = view.findViewById(R.id.note);
