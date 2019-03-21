@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.businessplanner.R;
 
@@ -41,8 +42,13 @@ public class PlansListAdapter extends RecyclerView.Adapter<PlansListAdapter.View
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        final TextView title;
+        final TextView note;
+
         ViewHolder(View view){
             super(view);
+            title = view.findViewById(R.id.title);
+            note = view.findViewById(R.id.note);
         }
     }
 }
