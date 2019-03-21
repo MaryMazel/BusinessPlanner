@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 
 import com.example.businessplanner.R;
@@ -49,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
                 PlansFragment plansFragment = new PlansFragment();
                 replaceFragment(plansFragment);
             }
-
             drawerLayout.closeDrawers();
 
             return true;
@@ -64,4 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    public void showMenu() {
+        drawerLayout.openDrawer(Gravity.START, true);
+    }
 }
