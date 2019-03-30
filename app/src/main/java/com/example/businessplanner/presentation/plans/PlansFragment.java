@@ -1,8 +1,10 @@
 package com.example.businessplanner.presentation.plans;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +26,7 @@ public class PlansFragment extends Fragment {
     private PlansListAdapter adapter;
     private List<Plan> plans;
     private DatabaseManager databaseManager;
-
+    private FloatingActionButton fab;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +56,15 @@ public class PlansFragment extends Fragment {
             public void onClick(View v) {
                 MainActivity mainActivity = (MainActivity) requireActivity();
                 mainActivity.showMenu();
+            }
+        });
+
+        fab = view.findViewById(R.id.fab_plans);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), InputNoteActivity.class);
+                startActivity(intent);
             }
         });
         return view;

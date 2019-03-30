@@ -5,4 +5,7 @@
     <string name="Calendar">Calendar</string>
     <string name="Plans">My plans</string>
     <string name="business_planner">Business Planner</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="input_your_plan_here">Input your plan here</string>
 </resources>

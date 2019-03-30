@@ -3,8 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_margin="8dp"
-    android:background="@color/colorWhite"
+    android:layout_marginBottom="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:padding="4dp"
+    android:background="@color/colorLight"
     android:elevation="4dp">
 
     <LinearLayout
@@ -20,20 +23,22 @@
             android:padding="4dp"
             android:text="Title"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_mode_edit_black_24dp"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            android:contentDescription="@string/edit" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_delete_forever_black_24dp"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            android:contentDescription="@string/delete" />
 
     </LinearLayout>
 
@@ -42,6 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLines="6"
+        android:textSize="14sp"
         android:text="This is a text This is a text This is a text
 This is a textThis is a textThis is a text This is a text This is a text This is a text
 This is a text This is a text This is a text This is a text This is a text This is a text This is a text This is a text This is a text
