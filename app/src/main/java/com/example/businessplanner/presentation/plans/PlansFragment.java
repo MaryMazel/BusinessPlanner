@@ -18,6 +18,7 @@ import com.example.businessplanner.data.entities.Plan;
 import com.example.businessplanner.domain.DatabaseManager;
 import com.example.businessplanner.presentation.MainActivity;
 
+import java.util.Collections;
 import java.util.List;
 
 public class PlansFragment extends Fragment {
@@ -39,6 +40,7 @@ public class PlansFragment extends Fragment {
     public void setAdapter() {
         plans = databaseManager.getPlans();
         adapter = new PlansListAdapter(getContext());
+        Collections.reverse(plans);
         adapter.setItems(plans);
     }
 

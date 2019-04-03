@@ -13,9 +13,11 @@
         android:background="@color/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="New plan" />
 
     <EditText
+        android:id="@+id/note_et"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:inputType="textMultiLine"

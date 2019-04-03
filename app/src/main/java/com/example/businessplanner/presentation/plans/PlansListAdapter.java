@@ -26,10 +26,6 @@ public class PlansListAdapter extends RecyclerView.Adapter<PlansListAdapter.View
     }
 
     public void setItems(List<Plan> planList) {
-        plans.add(new Plan("first", "wefuhweu  hwuief  huwe ehufhef ehufheufwe  iwuehf wiehrf wiwe hiwewf hw"));
-        plans.add(new Plan("second", "efw wheud  qe3 3ugew wygy g3ufwy wuyg fsb hbf f"));
-        plans.add(new Plan("third", "ehifwu hf shriuf whiur wiur r3 qq[2 0- -40 -w0 t"));
-        plans.add(new Plan("fourth", "vkx nsfjek flq2okwow[plplw;pork5g tejd dh j hdu4h iushgi d h khwnmemjr  n,wk rl"));
         if (planList == null || planList.size() == 0) {
             return;
         }
