@@ -27,15 +27,15 @@ public class DatabaseManager {
         return planDao.getAllPlans();
     }
 
-    public Plan getPlan(int id) {
+    public Plan getPlan(long id) {
         return planDao.getPlan(id);
     }
 
-    public void deletePlan(int id) {
+    public void deletePlan(long id) {
         planDao.deletePlan(id);
     }
 
-    public void updatePlanNote(String note, int id) {
-        planDao.updatePlanNote(note, id);
+    public void updatePlanNote(String note, String title, long id) {
+        planDao.updatePlan(note, title, id);
     }
 }

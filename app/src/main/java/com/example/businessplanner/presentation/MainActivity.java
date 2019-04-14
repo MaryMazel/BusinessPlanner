@@ -1,5 +1,7 @@
 package com.example.businessplanner.presentation;
 
+import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -64,5 +66,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void showMenu() {
         drawerLayout.openDrawer(Gravity.START, true);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

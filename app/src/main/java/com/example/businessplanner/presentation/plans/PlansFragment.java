@@ -1,5 +1,6 @@
 package com.example.businessplanner.presentation.plans;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,12 +24,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class PlansFragment extends Fragment {
+    private static final int REQUEST_CODE = 1;
+
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private PlansListAdapter adapter;
     private List<Plan> plans;
     private DatabaseManager databaseManager;
     private FloatingActionButton fab;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,10 +44,10 @@ public class PlansFragment extends Fragment {
 
     public void setAdapter() {
         plans = databaseManager.getPlans();
-        adapter = new PlansListAdapter(getContext());
         Collections.reverse(plans);
-        adapter.setItems(plans);
+        adapter = new PlansListAdapter(getContext(), plans);
     }
+
 
     @Nullable
     @Override
@@ -51,6 +56,7 @@ public class PlansFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view_plans);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
         toolbar = view.findViewById(R.id.toolbar_plans);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -66,9 +72,21 @@ public class PlansFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), InputNoteActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int result, Intent data){
+        super.onActivityResult(requestCode, result, data);
+        getActivity();
+        if (result == Activity.RESULT_OK && requestCode == REQUEST_CODE){
+            List<Plan> plans = databaseManager.getPlans();
+            Collections.reverse(plans);
+            recyclerView.setAdapter(new PlansListAdapter(requireContext(), plans));
+            recyclerView.invalidate();
+        }
     }
 }

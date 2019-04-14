@@ -1,6 +1,7 @@
 package com.example.businessplanner.presentation.plans;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +30,10 @@ public class InputNoteActivity extends Activity {
         manager = new DatabaseManager(this);
 
         editText = findViewById(R.id.note_et);
+        Intent intent = getIntent();
+        if (intent.hasExtra("plan_id")) {
+            openNote();
+        }
 
         toolbar = findViewById(R.id.toolbar_add_plan);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
@@ -52,11 +57,37 @@ public class InputNoteActivity extends Activity {
         });
     }
 
+    public void openNote() {
+        Long id = getIntent().getLongExtra("plan_id", 123456789);
+        Plan plan = manager.getPlan(id);
+        editText.setText(plan.note);
+    }
+
     public void saveNote() {
+        boolean newNote = true;
+
+        Intent intent = getIntent();
+        if (intent.hasExtra("plan_id")) {
+            newNote = false;
+        }
         String note = editText.getText().toString();
         if (note.length() != 0) {
-            manager.insertPlan(new Plan(formatDate(Calendar.getInstance().getTime()), note));
+            if (newNote) {
+                manager.insertPlan(new Plan(formatDate(Calendar.getInstance().getTime()), note));
+            } else {
+                long id = getIntent().getLongExtra("plan_id", 123456789);
+                manager.updatePlanNote(note, formatDate(Calendar.getInstance().getTime()), id);
+            }
+            Intent data = new Intent();
+            setResult(Activity.RESULT_OK, data);
+            goBack();
+        } else {
+            goBack();
         }
+    }
+
+    public void goBack() {
+        onBackPressed();
     }
 
     public String formatDate(Date date) {

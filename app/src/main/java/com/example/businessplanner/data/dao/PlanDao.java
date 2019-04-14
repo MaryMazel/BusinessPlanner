@@ -14,14 +14,14 @@ public interface PlanDao {
     void insert(Plan... plans);
 
     @Query("delete from `plan` where id = :id")
-    void deletePlan(int id);
+    void deletePlan(long id);
 
     @Query("select * from `plan`")
     List<Plan> getAllPlans();
 
     @Query("select * from `plan` where id = :id")
-    Plan getPlan(int id);
+    Plan getPlan(long id);
 
-    @Query("update `plan` set note = :note where id = :id")
-    void updatePlanNote(String note, int id);
+    @Query("update `plan` set note = :note, title = :title where id = :id")
+    void updatePlan(String note, String title, long id);
 }
