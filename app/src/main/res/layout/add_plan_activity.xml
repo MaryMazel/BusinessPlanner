@@ -17,10 +17,20 @@
         app:title="New plan" />
 
     <EditText
+        android:id="@+id/title_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:autofillHints="@string/title"
+        android:hint="@string/title" />
+
+    <EditText
         android:id="@+id/note_et"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:inputType="textMultiLine"
-        android:gravity="top" />
+        android:hint="@string/note"
+        android:gravity="top"
+        android:autofillHints="@string/note" />
 
 </LinearLayout>

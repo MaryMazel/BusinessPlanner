@@ -15,12 +15,12 @@ import com.example.businessplanner.domain.DatabaseManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 public class InputNoteActivity extends Activity {
     private Toolbar toolbar;
-    private EditText editText;
+    private EditText editTextNote;
+    private EditText editTextTitle;
     private DatabaseManager manager;
 
     @Override
@@ -29,7 +29,8 @@ public class InputNoteActivity extends Activity {
         setContentView(R.layout.add_plan_activity);
         manager = new DatabaseManager(this);
 
-        editText = findViewById(R.id.note_et);
+        editTextNote = findViewById(R.id.note_et);
+        editTextTitle = findViewById(R.id.title_et);
         Intent intent = getIntent();
         if (intent.hasExtra("plan_id")) {
             openNote();
@@ -60,7 +61,13 @@ public class InputNoteActivity extends Activity {
     public void openNote() {
         Long id = getIntent().getLongExtra("plan_id", 123456789);
         Plan plan = manager.getPlan(id);
-        editText.setText(plan.note);
+        editTextNote.setText(plan.note);
+        editTextTitle.setText(plan.title);
+    }
+
+    public String formatDate(long date) {
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.UK);
+        return format.format(date);
     }
 
     public void saveNote() {
@@ -70,13 +77,14 @@ public class InputNoteActivity extends Activity {
         if (intent.hasExtra("plan_id")) {
             newNote = false;
         }
-        String note = editText.getText().toString();
+        String note = editTextNote.getText().toString();
+        String title = editTextTitle.getText().toString().equals("") ? "Title" : editTextTitle.getText().toString();
         if (note.length() != 0) {
             if (newNote) {
-                manager.insertPlan(new Plan(formatDate(Calendar.getInstance().getTime()), note));
+                manager.insertPlan(new Plan(title, note, Calendar.getInstance().getTime().getTime()));
             } else {
                 long id = getIntent().getLongExtra("plan_id", 123456789);
-                manager.updatePlanNote(note, formatDate(Calendar.getInstance().getTime()), id);
+                manager.updatePlanNote(note, title, Calendar.getInstance().getTime().getTime(), id);
             }
             Intent data = new Intent();
             setResult(Activity.RESULT_OK, data);
@@ -88,10 +96,5 @@ public class InputNoteActivity extends Activity {
 
     public void goBack() {
         onBackPressed();
-    }
-
-    public String formatDate(Date date) {
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.UK);
-        return format.format(date);
     }
 }

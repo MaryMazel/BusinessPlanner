@@ -9,4 +9,6 @@
     <string name="delete">Delete</string>
     <string name="input_your_plan_here">Input your plan here</string>
     <string name="save">Save</string>
+    <string name="title">Title</string>
+    <string name="note">Note</string>
 </resources>

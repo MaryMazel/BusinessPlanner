@@ -12,8 +12,11 @@ public class Plan {
 
     public String note;
 
-    public Plan(String title, String note) {
+    public long date;
+
+    public Plan(String title, String note, long date) {
         this.title = title;
         this.note = note;
+        this.date = date;
     }
 }

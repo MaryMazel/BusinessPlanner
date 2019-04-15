@@ -22,6 +22,6 @@ public interface PlanDao {
     @Query("select * from `plan` where id = :id")
     Plan getPlan(long id);
 
-    @Query("update `plan` set note = :note, title = :title where id = :id")
-    void updatePlan(String note, String title, long id);
+    @Query("update `plan` set note = :note, title = :title, date = :date where id = :id")
+    void updatePlan(String note, String title, long date, long id);
 }

@@ -35,7 +35,7 @@ public class DatabaseManager {
         planDao.deletePlan(id);
     }
 
-    public void updatePlanNote(String note, String title, long id) {
-        planDao.updatePlan(note, title, id);
+    public void updatePlanNote(String note, String title, long date, long id) {
+        planDao.updatePlan(note, title, date, id);
     }
 }

@@ -45,9 +45,15 @@ public class PlansFragment extends Fragment {
     public void setAdapter() {
         plans = databaseManager.getPlans();
         Collections.reverse(plans);
-        adapter = new PlansListAdapter(getContext(), plans);
+        adapter = new PlansListAdapter(getContext(), plans, new PlansListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Plan plan) {
+                Intent intent = new Intent(requireContext(), InputNoteActivity.class);
+                intent.putExtra("plan_id", plan.id);
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+        });
     }
-
 
     @Nullable
     @Override
@@ -85,7 +91,14 @@ public class PlansFragment extends Fragment {
         if (result == Activity.RESULT_OK && requestCode == REQUEST_CODE){
             List<Plan> plans = databaseManager.getPlans();
             Collections.reverse(plans);
-            recyclerView.setAdapter(new PlansListAdapter(requireContext(), plans));
+            recyclerView.setAdapter(new PlansListAdapter(requireContext(), plans, new PlansListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Plan plan) {
+                    Intent intent = new Intent(requireContext(), InputNoteActivity.class);
+                    intent.putExtra("plan_id", plan.id);
+                    startActivityForResult(intent, REQUEST_CODE);
+                }
+            }));
             recyclerView.invalidate();
         }
     }
