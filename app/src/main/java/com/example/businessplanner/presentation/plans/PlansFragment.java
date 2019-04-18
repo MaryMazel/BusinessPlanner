@@ -9,9 +9,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -36,9 +37,8 @@ public class PlansFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
         databaseManager = new DatabaseManager(requireContext());
-
         setAdapter();
     }
 
@@ -72,6 +72,25 @@ public class PlansFragment extends Fragment {
                 mainActivity.showMenu();
             }
         });
+        toolbar.inflateMenu(R.menu.plans_search);
+
+        MenuItem myActionMenuItem = toolbar.getMenu().findItem(R.id.action_search);
+        SearchView searchView = (SearchView) myActionMenuItem.getActionView();
+
+        searchView.setQueryHint("Search");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                textSubmit(s);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                textSubmit(s);
+                return false;
+            }
+        });
 
         fab = view.findViewById(R.id.fab_plans);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +101,18 @@ public class PlansFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public void textSubmit(String s) {
+        List<Plan> allPlans = databaseManager.getPlans();
+        Collections.reverse(allPlans);
+        plans.clear();
+        for (Plan plan : allPlans) {
+            if (plan.title.toLowerCase().contains(s.toLowerCase()) || plan.note.toLowerCase().contains(s.toLowerCase())) {
+                plans.add(plan);
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
