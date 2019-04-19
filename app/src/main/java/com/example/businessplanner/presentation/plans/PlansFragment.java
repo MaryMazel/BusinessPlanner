@@ -1,12 +1,15 @@
 package com.example.businessplanner.presentation.plans;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.print.PrintHelper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -20,6 +23,7 @@ import com.example.businessplanner.R;
 import com.example.businessplanner.data.entities.Plan;
 import com.example.businessplanner.domain.DatabaseManager;
 import com.example.businessplanner.presentation.MainActivity;
+import com.example.businessplanner.presentation.utils.PrintBitmapBuilder;
 
 import java.util.Collections;
 import java.util.List;
@@ -72,10 +76,25 @@ public class PlansFragment extends Fragment {
                 mainActivity.showMenu();
             }
         });
+
+        processMenuItems(toolbar);
+
+        fab = view.findViewById(R.id.fab_plans);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), InputNoteActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+        });
+        return view;
+    }
+
+    private void processMenuItems(Toolbar toolbar) {
         toolbar.inflateMenu(R.menu.plans_search);
 
-        MenuItem myActionMenuItem = toolbar.getMenu().findItem(R.id.action_search);
-        SearchView searchView = (SearchView) myActionMenuItem.getActionView();
+        MenuItem actionSearch = toolbar.getMenu().findItem(R.id.action_search);
+        SearchView searchView = (SearchView) actionSearch.getActionView();
 
         searchView.setQueryHint("Search");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -92,15 +111,54 @@ public class PlansFragment extends Fragment {
             }
         });
 
-        fab = view.findViewById(R.id.fab_plans);
-        fab.setOnClickListener(new View.OnClickListener() {
+        MenuItem actionDownload = toolbar.getMenu().findItem(R.id.action_download);
+        actionDownload.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), InputNoteActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.action_download) {
+                    downloadPlansAsFiles();
+                }
+                return true;
             }
         });
-        return view;
+    }
+
+    private void alertNoPlans() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setMessage("There are no plans to download")
+                .setTitle("Warning")
+                .setCancelable(false)
+                .setPositiveButton("Ok", null);
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    public void downloadPlansAsFiles() {
+        Context context = requireContext();
+
+        List<Plan> plansList = databaseManager.getPlans();
+        if (plansList == null) {
+            alertNoPlans();
+            return;
+        }
+
+        PrintBitmapBuilder builder = new PrintBitmapBuilder(context);
+        StringBuilder sb = new StringBuilder();
+
+        int i = 1;
+        for (Plan plan : plansList) {
+            sb.append(i).append(". ").append(plan.title).append("\n\t").append(plan.note).append("\n\n");
+            if (i != plansList.size()) {
+                sb.append("---------------------------\n\n");
+            }
+            i++;
+        }
+
+        builder.setTextAlign(PrintBitmapBuilder.ReceiptTextAlign.LEFT);
+        builder.appendString(sb.toString());
+
+        PrintHelper printHelper = new PrintHelper(context);
+        printHelper.printBitmap("Print", builder.build());
     }
 
     public void textSubmit(String s) {
@@ -116,10 +174,10 @@ public class PlansFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int result, Intent data){
+    public void onActivityResult(int requestCode, int result, Intent data) {
         super.onActivityResult(requestCode, result, data);
         getActivity();
-        if (result == Activity.RESULT_OK && requestCode == REQUEST_CODE){
+        if (result == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
             List<Plan> plans = databaseManager.getPlans();
             Collections.reverse(plans);
             recyclerView.setAdapter(new PlansListAdapter(requireContext(), plans, new PlansListAdapter.OnItemClickListener() {
