@@ -13,4 +13,6 @@
     <string name="note">Note</string>
     <string name="search">Search</string>
     <string name="download">Download</string>
+    <string name="write_a_note">Write a note</string>
+    <string name="no_note">No note</string>
 </resources>
