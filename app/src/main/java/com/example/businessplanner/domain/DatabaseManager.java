@@ -5,7 +5,9 @@ import android.support.annotation.NonNull;
 
 import com.example.businessplanner.data.AppDatabase;
 import com.example.businessplanner.data.DatabaseInitializer;
+import com.example.businessplanner.data.dao.CalendarDao;
 import com.example.businessplanner.data.dao.PlanDao;
+import com.example.businessplanner.data.entities.CalendarEvent;
 import com.example.businessplanner.data.entities.Plan;
 
 import java.util.List;
@@ -13,11 +15,15 @@ import java.util.List;
 public class DatabaseManager {
     private AppDatabase database;
     private PlanDao planDao;
+    private CalendarDao calendarDao;
 
     public DatabaseManager(@NonNull Context context) {
         database = DatabaseInitializer.createDatabase(context);
         this.planDao = database.planDao();
+        this.calendarDao = database.calendarDao();
     }
+
+    //planDao region
 
     public void insertPlan(Plan plan) {
         planDao.insert(plan);
@@ -38,4 +44,34 @@ public class DatabaseManager {
     public void updatePlanNote(String note, String title, long date, long id) {
         planDao.updatePlan(note, title, date, id);
     }
+
+    //planDao end region
+
+    //calendarDao region
+
+    public void insertEvent(CalendarEvent event) {
+        calendarDao.insert(event);
+    }
+
+    public List<CalendarEvent> getCalendarEvents() {
+        return calendarDao.getEvents();
+    }
+
+    public List<CalendarEvent> getCurrentDayEvents(String date) {
+        return calendarDao.getCurrentDayEvents(date);
+    }
+
+    public void deleteEvent(long id) {
+        calendarDao.deleteEvent(id);
+    }
+
+    public void deleteCurrentDayEvents(String date) {
+        calendarDao.deleteCurrentDayEvents(date);
+    }
+
+    public void updateEvent(String text, long id, long fullDate) {
+        calendarDao.updateCalendarEvent(text, id, fullDate);
+    }
+
+    //calendarDao end region
 }

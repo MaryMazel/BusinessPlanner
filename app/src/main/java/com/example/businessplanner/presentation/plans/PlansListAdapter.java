@@ -3,15 +3,12 @@ package com.example.businessplanner.presentation.plans;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.businessplanner.R;
@@ -19,8 +16,6 @@ import com.example.businessplanner.data.entities.Plan;
 import com.example.businessplanner.domain.DatabaseManager;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -111,7 +106,7 @@ public class PlansListAdapter extends RecyclerView.Adapter<PlansListAdapter.View
         ViewHolder(View view) {
             super(view);
             title = view.findViewById(R.id.title);
-            note = view.findViewById(R.id.note);
+            note = view.findViewById(R.id.note_preview);
             delete = view.findViewById(R.id.delete_plan);
             date = view.findViewById(R.id.date);
         }

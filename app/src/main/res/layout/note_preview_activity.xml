@@ -16,12 +16,15 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="Note for today" />
 
-    <TextView
-        android:id="@+id/note"
+    <EditText
+        android:id="@+id/add_note_cal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:background="@color/colorLight"
         android:padding="8dp"
-        android:hint="@string/no_note"
-        android:textSize="20sp" />
+        android:layout_height="match_parent"
+        android:inputType="textMultiLine"
+        android:hint="@string/note"
+        android:gravity="top"
+        android:autofillHints="@string/note" />
 
 </LinearLayout>
