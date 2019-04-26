@@ -46,13 +46,10 @@ public class CalendarFragment extends Fragment {
     public void setAdapter(Calendar calendar) {
         events = databaseManager.getCurrentDayEvents(formatDate(calendar));
         Collections.reverse(events);
-        adapter = new CalendarNotesListAdapter(requireContext(), events, new CalendarNotesListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(CalendarEvent event) {
-                Intent intent = new Intent(requireContext(), NotePreviewActivity.class);
-                intent.putExtra("event_id", event.id);
-                startActivityForResult(intent, REQUEST_CODE);
-            }
+        adapter = new CalendarNotesListAdapter(requireContext(), events, event -> {
+            Intent intent = new Intent(requireContext(), NotePreviewActivity.class);
+            intent.putExtra("event_id", event.id);
+            startActivityForResult(intent, REQUEST_CODE);
         });
         recyclerView.setAdapter(adapter);
     }
@@ -68,25 +65,19 @@ public class CalendarFragment extends Fragment {
         min.set(2019, 1, 1);
         calendarView.setMinimumDate(min);
 
-        calendarView.setOnDayClickListener(new OnDayClickListener() {
-            @Override
-            public void onDayClick(EventDay eventDay) {
-                setAdapter(eventDay.getCalendar());
-                adapter.notifyDataSetChanged();
-            }
+        calendarView.setOnDayClickListener(eventDay -> {
+            setAdapter(eventDay.getCalendar());
+            adapter.notifyDataSetChanged();
         });
 
         recyclerView = view.findViewById(R.id.recycler_view_calendar);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         FloatingActionButton fab = view.findViewById(R.id.fab_calendar);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(requireContext(), NotePreviewActivity.class);
-                intent.putExtra("new note", formatDate(calendarView.getFirstSelectedDate()));
-                startActivityForResult(intent, REQUEST_CODE);
-            }
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), NotePreviewActivity.class);
+            intent.putExtra("new note", formatDate(calendarView.getFirstSelectedDate()));
+            startActivityForResult(intent, REQUEST_CODE);
         });
 
         Toolbar toolbar = view.findViewById(R.id.toolbar_calendar);

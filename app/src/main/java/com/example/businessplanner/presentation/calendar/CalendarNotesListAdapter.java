@@ -69,7 +69,7 @@ public class CalendarNotesListAdapter extends RecyclerView.Adapter<CalendarNotes
                         .setNegativeButton("No",
                                 (dialog, id) -> dialog.cancel())
                         .setPositiveButton("Yes", (dialog, which) -> {
-                            manager.deletePlan(event.id);
+                            manager.deleteEvent(event.id);
                             calendarEvents.remove(getAdapterPosition());
                             notifyDataSetChanged();
                         });
