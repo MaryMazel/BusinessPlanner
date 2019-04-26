@@ -61,6 +61,9 @@ public class DatabaseManager {
         return calendarDao.getCurrentDayEvents(date);
     }
 
+    public CalendarEvent getEvent(long id) {
+        return calendarDao.getEvent(id);
+    }
     public void deleteEvent(long id) {
         calendarDao.deleteEvent(id);
     }

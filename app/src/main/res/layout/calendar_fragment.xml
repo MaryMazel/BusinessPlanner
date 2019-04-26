@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,10 +38,12 @@
         </com.applandeo.materialcalendarview.CalendarView>
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_calendar"
             android:padding="8dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            tools:listitem="@layout/cal_plan_item"
             android:background="@color/colorLight">
         </android.support.v7.widget.RecyclerView>
 

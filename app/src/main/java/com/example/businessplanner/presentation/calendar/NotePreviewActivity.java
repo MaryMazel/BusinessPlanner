@@ -1,19 +1,20 @@
 package com.example.businessplanner.presentation.calendar;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.businessplanner.R;
 import com.example.businessplanner.data.entities.CalendarEvent;
 import com.example.businessplanner.domain.DatabaseManager;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class NotePreviewActivity extends AppCompatActivity {
     private EditText et_note;
@@ -27,6 +28,11 @@ public class NotePreviewActivity extends AppCompatActivity {
         manager = new DatabaseManager(this);
 
         et_note = findViewById(R.id.add_note_cal);
+        Intent intent = getIntent();
+        if (intent.hasExtra("event_id")) {
+            openNote();
+        }
+
 
         Toolbar toolbar = findViewById(R.id.toolbar_note_preview);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
@@ -48,33 +54,41 @@ public class NotePreviewActivity extends AppCompatActivity {
         });
     }
 
-    public void saveNote() {
-        String note = et_note.getText().toString();
+    public void openNote() {
+        Long id = getIntent().getLongExtra("event_id", 123456789);
+        CalendarEvent event = manager.getEvent(id);
+        et_note.setText(event.text);
+    }
 
-        if (note.length() != 0) {
-            long today = Calendar.getInstance().getTime().getTime();
-            manager.insertEvent(new CalendarEvent(today, formatDate(today), note));
+    public void saveNote() {
+        boolean newNote = true;
+        String date = "";
+        Intent intent = getIntent();
+        if (intent.hasExtra("event_id")) {
+            newNote = false;
+        } else {
+            date = intent.getStringExtra("new note");
         }
-        /*if (note.length() != 0) {
+        long eventID = intent.getLongExtra("event_id", 1000000);
+        String note = et_note.getText().toString();
+        long today = Calendar.getInstance().getTime().getTime();
+        if (note.length() != 0) {
             if (newNote) {
-                manager.insertPlan(new Plan(title, note, Calendar.getInstance().getTime().getTime()));
+                manager.insertEvent(new CalendarEvent(today, date, note));
+                Toast.makeText(this, "Note inserted", Toast.LENGTH_SHORT).show();
             } else {
-                long id = getIntent().getLongExtra("plan_id", 123456789);
-                manager.updatePlanNote(note, title, Calendar.getInstance().getTime().getTime(), id);
+                manager.updateEvent(note, eventID, today);
+                Toast.makeText(this, "Note updated", Toast.LENGTH_SHORT).show();
             }
             Intent data = new Intent();
             setResult(Activity.RESULT_OK, data);
             goBack();
-        } else {}*/
-        goBack();
+        } else {
+            goBack();
+        }
     }
 
     public void goBack() {
         onBackPressed();
-    }
-
-    public String formatDate(long date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.UK);
-        return dateFormat.format(date);
     }
 }

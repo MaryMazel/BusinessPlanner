@@ -16,6 +16,9 @@ public interface CalendarDao {
     @Query("select * from CalendarEvent")
     List<CalendarEvent> getEvents();
 
+    @Query("select  * from calendarevent where id = :id")
+    CalendarEvent getEvent(long id);
+
     @Query("select * from calendarevent where date = :date")
     List<CalendarEvent> getCurrentDayEvents(String date);
 
