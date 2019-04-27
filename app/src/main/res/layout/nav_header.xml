@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:minHeight="140dp"
     android:background="@drawable/image_main"
-    android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:gravity="bottom"
+    android:minHeight="140dp"
     android:orientation="vertical"
-    android:gravity="bottom">
+    android:padding="16dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <TextView
         android:id="@+id/userName"
@@ -15,6 +15,6 @@
         android:layout_height="wrap_content"
         android:text="@string/business_planner"
         android:textColor="@color/colorWhite"
-        android:textSize="20sp"/>
+        android:textSize="20sp" />
 
 </LinearLayout>

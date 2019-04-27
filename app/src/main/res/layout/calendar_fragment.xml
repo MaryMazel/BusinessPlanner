@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,8 +14,8 @@
             android:id="@+id/toolbar_calendar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="4dp"
             android:background="@color/colorPrimary"
+            android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:navigationIcon="@drawable/ic_menu_white_hamburger"
             app:title="@string/Calendar" />
@@ -24,37 +24,36 @@
             android:id="@+id/calendar_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:pagesColor="#2003A9F4"
+            app:abbreviationsBarColor="@color/colorPrimary"
             app:abbreviationsLabelsColor="@color/colorWhite"
+            app:datePicker="true"
+            app:daysLabelsColor="@color/colorSecondaryText"
+            app:headerColor="@color/colorPrimary"
+            app:pagesColor="@color/colorLightBlue"
             app:selectionColor="@color/colorAccent"
             app:selectionLabelColor="@color/colorPrimary"
-            app:daysLabelsColor="@color/colorSecondaryText"
             app:todayLabelColor="#9E68A7"
-            app:abbreviationsBarColor="@color/colorPrimary"
-            app:headerColor="@color/colorPrimary"
-            app:type="many_days_picker"
-            app:datePicker="true">
+            app:type="many_days_picker">
 
         </com.applandeo.materialcalendarview.CalendarView>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_calendar"
-            android:padding="8dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            tools:listitem="@layout/cal_plan_item"
-            android:background="@color/colorLight">
-        </android.support.v7.widget.RecyclerView>
+            android:background="@color/colorLight"
+            android:padding="8dp"
+            tools:listitem="@layout/cal_plan_item" />
 
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
-    android:id="@+id/fab_calendar"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:src="@drawable/ic_add_white"
-    android:layout_gravity="end|bottom"
-    android:layout_margin="16dp" />
+        android:id="@+id/fab_calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_white" />
 </FrameLayout>
 

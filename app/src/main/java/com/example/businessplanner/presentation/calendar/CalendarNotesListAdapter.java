@@ -79,11 +79,6 @@ public class CalendarNotesListAdapter extends RecyclerView.Adapter<CalendarNotes
             itemView.setOnClickListener(v -> listener.onItemClick(event));
         }
 
-        public String formatDate(long date) {
-            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.UK);
-            return format.format(date);
-        }
-
         ViewHolder(View view) {
             super(view);
             text = view.findViewById(R.id.text_cal_item);

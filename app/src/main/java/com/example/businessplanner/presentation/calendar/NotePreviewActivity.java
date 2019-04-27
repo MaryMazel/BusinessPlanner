@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -33,24 +31,18 @@ public class NotePreviewActivity extends AppCompatActivity {
             openNote();
         }
 
-
         Toolbar toolbar = findViewById(R.id.toolbar_note_preview);
+        if (intent.hasExtra("current_date")) {
+            toolbar.setTitle(intent.getStringExtra("current_date"));
+        }
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
         toolbar.inflateMenu(R.menu.add_note_cal_menu);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.save_note_cal) {
-                    saveNote();
-                }
-                return true;
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.save_note_cal) {
+                saveNote();
             }
+            return true;
         });
     }
 

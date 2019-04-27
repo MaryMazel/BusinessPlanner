@@ -49,6 +49,7 @@ public class CalendarFragment extends Fragment {
         adapter = new CalendarNotesListAdapter(requireContext(), events, event -> {
             Intent intent = new Intent(requireContext(), NotePreviewActivity.class);
             intent.putExtra("event_id", event.id);
+            intent.putExtra("current_date", formatDate(calendarView.getFirstSelectedDate()));
             startActivityForResult(intent, REQUEST_CODE);
         });
         recyclerView.setAdapter(adapter);
@@ -76,7 +77,7 @@ public class CalendarFragment extends Fragment {
         FloatingActionButton fab = view.findViewById(R.id.fab_calendar);
         fab.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), NotePreviewActivity.class);
-            intent.putExtra("new note", formatDate(calendarView.getFirstSelectedDate()));
+            intent.putExtra("current_date", formatDate(calendarView.getFirstSelectedDate()));
             startActivityForResult(intent, REQUEST_CODE);
         });
 

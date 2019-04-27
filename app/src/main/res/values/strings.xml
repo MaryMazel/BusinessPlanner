@@ -23,4 +23,19 @@
     <string name="material_calendar_friday">Fri</string>
     <string name="material_calendar_saturday">Sat</string>
     <string name="material_calendar_sunday">Sun</string>
+
+    <string name="phone">Phone:</string>
+    <string name="email">Email:</string>
+    <string name="address">Address:</string>
+    <string name="profit">Profit:</string>
+    <string name="deal_date">Deal date:</string>
+    <string name="state">State:</string>
+    <string name="name_and_surname">Name and Surname</string>
+    <string name="phone_number">Phone number</string>
+    <string name="email_input">Email</string>
+    <string name="address_input">Address</string>
+    <string name="state_input">State</string>
+    <string name="profit_input">Profit</string>
+    <string name="deal_date_input">Deal date</string>
+
 </resources>

@@ -49,13 +49,10 @@ public class PlansFragment extends Fragment {
     public void setAdapter() {
         plans = databaseManager.getPlans();
         Collections.reverse(plans);
-        adapter = new PlansListAdapter(getContext(), plans, new PlansListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Plan plan) {
-                Intent intent = new Intent(requireContext(), InputNoteActivity.class);
-                intent.putExtra("plan_id", plan.id);
-                startActivityForResult(intent, REQUEST_CODE);
-            }
+        adapter = new PlansListAdapter(getContext(), plans, plan -> {
+            Intent intent = new Intent(requireContext(), InputNoteActivity.class);
+            intent.putExtra("plan_id", plan.id);
+            startActivityForResult(intent, REQUEST_CODE);
         });
     }
 
@@ -69,23 +66,17 @@ public class PlansFragment extends Fragment {
         adapter.notifyDataSetChanged();
 
         toolbar = view.findViewById(R.id.toolbar_plans);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity mainActivity = (MainActivity) requireActivity();
-                mainActivity.showMenu();
-            }
+        toolbar.setNavigationOnClickListener(v -> {
+            MainActivity mainActivity = (MainActivity) requireActivity();
+            mainActivity.showMenu();
         });
 
         processMenuItems(toolbar);
 
         fab = view.findViewById(R.id.fab_plans);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), InputNoteActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
-            }
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), InputNoteActivity.class);
+            startActivityForResult(intent, REQUEST_CODE);
         });
         return view;
     }
@@ -112,14 +103,11 @@ public class PlansFragment extends Fragment {
         });
 
         MenuItem actionDownload = toolbar.getMenu().findItem(R.id.action_download);
-        actionDownload.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.action_download) {
-                    downloadPlansAsFiles();
-                }
-                return true;
+        actionDownload.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.action_download) {
+                downloadPlansAsFiles();
             }
+            return true;
         });
     }
 
