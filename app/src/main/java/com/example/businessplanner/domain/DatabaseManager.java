@@ -6,8 +6,10 @@ import android.support.annotation.NonNull;
 import com.example.businessplanner.data.AppDatabase;
 import com.example.businessplanner.data.DatabaseInitializer;
 import com.example.businessplanner.data.dao.CalendarDao;
+import com.example.businessplanner.data.dao.CustomerDao;
 import com.example.businessplanner.data.dao.PlanDao;
 import com.example.businessplanner.data.entities.CalendarEvent;
+import com.example.businessplanner.data.entities.Customer;
 import com.example.businessplanner.data.entities.Plan;
 
 import java.util.List;
@@ -16,6 +18,7 @@ public class DatabaseManager {
     private AppDatabase database;
     private PlanDao planDao;
     private CalendarDao calendarDao;
+    private CustomerDao customerDao;
 
     public DatabaseManager(@NonNull Context context) {
         database = DatabaseInitializer.createDatabase(context);
@@ -77,4 +80,24 @@ public class DatabaseManager {
     }
 
     //calendarDao end region
+
+    //customerDao region
+
+    public void insertCustomer(Customer customer) {
+        customerDao.insert(customer);
+    }
+
+    public List<Customer> getCustomers() {
+        return customerDao.getCustomers();
+    }
+
+    public Customer getCustomerByID(long id) {
+        return customerDao.getCustomerByID(id);
+    }
+
+    public void deleteCustomer(long id) {
+        customerDao.deleteCustomer(id);
+    }
+
+    //customerDao end region
 }
