@@ -24,6 +24,7 @@ public class DatabaseManager {
         database = DatabaseInitializer.createDatabase(context);
         this.planDao = database.planDao();
         this.calendarDao = database.calendarDao();
+        this.customerDao = database.customerDao();
     }
 
     //planDao region
