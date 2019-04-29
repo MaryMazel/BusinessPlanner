@@ -27,13 +27,13 @@ public class NotePreviewActivity extends AppCompatActivity {
 
         et_note = findViewById(R.id.add_note_cal);
         Intent intent = getIntent();
-        if (intent.hasExtra("event_id")) {
+        if (intent.hasExtra(CalendarFragment.EVENT_ID)) {
             openNote();
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar_note_preview);
-        if (intent.hasExtra("current_date")) {
-            toolbar.setTitle(intent.getStringExtra("current_date"));
+        if (intent.hasExtra(CalendarFragment.CURRENT_DATE)) {
+            toolbar.setTitle(intent.getStringExtra(CalendarFragment.CURRENT_DATE));
         }
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
@@ -47,7 +47,7 @@ public class NotePreviewActivity extends AppCompatActivity {
     }
 
     public void openNote() {
-        Long id = getIntent().getLongExtra("event_id", 123456789);
+        Long id = getIntent().getLongExtra(CalendarFragment.EVENT_ID, 123456789);
         CalendarEvent event = manager.getEvent(id);
         et_note.setText(event.text);
     }
@@ -56,12 +56,12 @@ public class NotePreviewActivity extends AppCompatActivity {
         boolean newNote = true;
         String date = "";
         Intent intent = getIntent();
-        if (intent.hasExtra("event_id")) {
+        if (intent.hasExtra(CalendarFragment.EVENT_ID)) {
             newNote = false;
         } else {
-            date = intent.getStringExtra("new note");
+            date = intent.getStringExtra(CalendarFragment.CURRENT_DATE);
         }
-        long eventID = intent.getLongExtra("event_id", 1000000);
+        long eventID = intent.getLongExtra(CalendarFragment.EVENT_ID, 1000000);
         String note = et_note.getText().toString();
         long today = Calendar.getInstance().getTime().getTime();
         if (note.length() != 0) {

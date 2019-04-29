@@ -30,6 +30,8 @@ import java.util.Locale;
 
 public class CalendarFragment extends Fragment {
     private static final int REQUEST_CODE = 1;
+    public static final String EVENT_ID = "event_id";
+    public static final String CURRENT_DATE = "current_date";
 
     private RecyclerView recyclerView;
     private CalendarNotesListAdapter adapter;
@@ -48,8 +50,8 @@ public class CalendarFragment extends Fragment {
         Collections.reverse(events);
         adapter = new CalendarNotesListAdapter(requireContext(), events, event -> {
             Intent intent = new Intent(requireContext(), NotePreviewActivity.class);
-            intent.putExtra("event_id", event.id);
-            intent.putExtra("current_date", formatDate(calendarView.getFirstSelectedDate()));
+            intent.putExtra(EVENT_ID, event.id);
+            intent.putExtra(CURRENT_DATE, formatDate(calendarView.getFirstSelectedDate()));
             startActivityForResult(intent, REQUEST_CODE);
         });
         recyclerView.setAdapter(adapter);
@@ -77,7 +79,7 @@ public class CalendarFragment extends Fragment {
         FloatingActionButton fab = view.findViewById(R.id.fab_calendar);
         fab.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), NotePreviewActivity.class);
-            intent.putExtra("current_date", formatDate(calendarView.getFirstSelectedDate()));
+            intent.putExtra(CURRENT_DATE, formatDate(calendarView.getFirstSelectedDate()));
             startActivityForResult(intent, REQUEST_CODE);
         });
 
