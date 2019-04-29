@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 
 import com.example.businessplanner.R;
@@ -38,23 +36,13 @@ public class InputNoteActivity extends Activity {
 
         toolbar = findViewById(R.id.toolbar_add_plan);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
         toolbar.inflateMenu(R.menu.add_plan_menu);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.save_note:
-                        saveNote();
-                        break;
-                }
-                return true;
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.save_note) {
+                saveNote();
             }
+            return true;
         });
     }
 

@@ -37,5 +37,7 @@
     <string name="state_input">State</string>
     <string name="profit_input">Profit</string>
     <string name="deal_date_input">Deal date</string>
+    <string name="no_image_yet">No image yet</string>
+    <string name="pick_date">Pick date</string>
 
 </resources>

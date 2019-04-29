@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".presentation.calendar.NotePreviewActivity" />
+        <activity android:name=".presentation.customers.CustomerProfileActivity" />
     </application>
 
 </manifest>
