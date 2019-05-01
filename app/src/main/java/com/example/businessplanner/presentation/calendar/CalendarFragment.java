@@ -15,8 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.applandeo.materialcalendarview.CalendarView;
-import com.applandeo.materialcalendarview.EventDay;
-import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.example.businessplanner.R;
 import com.example.businessplanner.data.entities.CalendarEvent;
 import com.example.businessplanner.domain.DatabaseManager;

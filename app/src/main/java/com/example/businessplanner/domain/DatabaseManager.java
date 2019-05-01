@@ -100,5 +100,8 @@ public class DatabaseManager {
         customerDao.deleteCustomer(id);
     }
 
+    public void updateCustomer(long id, String uri, String name, String phone, String email, String address, long dealDate, long profit, Customer.State state) {
+        customerDao.updateCustomer(id, uri, name, phone, email, address, dealDate, profit, state);
+    }
     //customerDao end region
 }

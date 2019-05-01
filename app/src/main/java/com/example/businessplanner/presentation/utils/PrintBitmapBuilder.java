@@ -89,8 +89,8 @@ public class PrintBitmapBuilder {
     }
 
     public Bitmap build() {
-        int widthSpec = View.MeasureSpec.makeMeasureSpec (PRINT_WIDTH, View.MeasureSpec.EXACTLY);
-        int heightSpec = View.MeasureSpec.makeMeasureSpec (PRINT_HIGHT, View.MeasureSpec.EXACTLY);
+        int widthSpec = View.MeasureSpec.makeMeasureSpec(PRINT_WIDTH, View.MeasureSpec.EXACTLY);
+        int heightSpec = View.MeasureSpec.makeMeasureSpec(PRINT_HIGHT, View.MeasureSpec.EXACTLY);
         linearLayout.measure(widthSpec, heightSpec);
         linearLayout.layout(0, 0, linearLayout.getMeasuredWidth(), linearLayout.getMeasuredHeight());
 

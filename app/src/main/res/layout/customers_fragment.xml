@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
+        android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:navigationIcon="@drawable/ic_menu_white_hamburger"
         app:title="@string/Customers" />
@@ -24,7 +25,7 @@
             android:id="@+id/recycler_view_customers"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="4dp"
+            android:padding="4dp"
             tools:listitem="@layout/customers_item">
 
         </android.support.v7.widget.RecyclerView>

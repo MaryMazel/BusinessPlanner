@@ -10,17 +10,27 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.businessplanner.R;
+import com.example.businessplanner.data.entities.Customer;
+import com.example.businessplanner.domain.DatabaseManager;
+import com.example.businessplanner.presentation.utils.Validator;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class CustomerProfileActivity extends AppCompatActivity {
     private Toolbar toolbar;
+
     private ImageView imageCustomer;
     private TextInputLayout inputName;
     private TextInputLayout inputEmail;
@@ -31,7 +41,10 @@ public class CustomerProfileActivity extends AppCompatActivity {
     private ImageView datePickerButton;
     private TextView dealDate;
 
-    private Calendar dealDateCalendar;
+    private Uri customerImageURI;
+    private long selectedDate;
+
+    private DatabaseManager manager;
 
     int day = 1;
     int month = 0;
@@ -42,21 +55,9 @@ public class CustomerProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customer_profile_activity);
 
-        toolbar = findViewById(R.id.toolbar_customers_profile);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
-        toolbar.inflateMenu(R.menu.save_profile_menu);
-        toolbar.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.save_profile:
-                    //to do
-                    break;
-                case R.id.delete_profile:
-                    //to do
-                    break;
-            }
-            return true;
-        });
+        manager = new DatabaseManager(this);
+
+        setToolbar();
 
         imageCustomer = findViewById(R.id.profile_image);
         inputName = findViewById(R.id.profile_name);
@@ -64,7 +65,8 @@ public class CustomerProfileActivity extends AppCompatActivity {
         inputEmail = findViewById(R.id.profile_email);
         inputProfit = findViewById(R.id.profile_profit);
         inputAddress = findViewById(R.id.profile_address);
-        stateSpinner = findViewById(R.id.state_spinner);
+
+        setSpinner();
 
         dealDate = findViewById(R.id.profile_deal_date);
         datePickerButton = findViewById(R.id.date_picker_dialog);
@@ -76,6 +78,119 @@ public class CustomerProfileActivity extends AppCompatActivity {
                     android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
             startActivityForResult(Intent.createChooser(intent, "select a picture"), 1);
         });
+
+        Intent intent = getIntent();
+        if (intent.hasExtra("customer_id")) {
+            openNote();
+        }
+    }
+
+    private void openNote() {
+        Long id = getIntent().getLongExtra("customer_id", 123456789);
+        Customer customer = manager.getCustomerByID(id);
+        if (!customer.uri_image.equals("0")) {
+            imageCustomer.setImageURI(Uri.parse(customer.uri_image));
+            customerImageURI = Uri.parse(customer.uri_image);
+        }
+        inputName.getEditText().setText(customer.customer_name);
+        inputPhone.getEditText().setText(customer.phone);
+
+        if (customer.email.equals("0")) {
+            inputEmail.getEditText().setText("");
+        } else {
+            inputEmail.getEditText().setText(customer.email);
+        }
+
+        if (customer.address.equals("0")) {
+            inputAddress.getEditText().setText("");
+        } else {
+            inputAddress.getEditText().setText(customer.address);
+        }
+
+        if (customer.profit == 0) {
+            inputProfit.getEditText().setText("");
+        } else {
+            inputEmail.getEditText().setText(customer.email);
+        }
+
+        if (customer.deal_date == 0) {
+            dealDate.setText("");
+        }
+
+        stateSpinner.setSelection(customer.state.getCode());
+    }
+
+    private void setToolbar() {
+        toolbar = findViewById(R.id.toolbar_customers_profile);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.inflateMenu(R.menu.save_profile_menu);
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.save_profile:
+                    saveProfile();
+                    break;
+                case R.id.delete_profile:
+                    //to do
+                    break;
+            }
+            return true;
+        });
+    }
+
+    private void saveProfile() {
+        String name = inputName.getEditText().getText().toString();
+        String phone = inputPhone.getEditText().getText().toString();
+        String email = inputEmail.getEditText().getText().toString();
+        String address = inputAddress.getEditText().getText().toString();
+        String profitString = inputProfit.getEditText().getText().toString();
+
+        long dealDateValue = selectedDate;
+        Customer.State state = null;
+        switch (stateSpinner.getSelectedItem().toString()) {
+            case "ANALISE":
+                state = Customer.State.ANALISE;
+                break;
+            case "IN_PROGRESS":
+                state = Customer.State.IN_PROGRESS;
+                break;
+            case "CLOSED":
+                state = Customer.State.CLOSED;
+                break;
+        }
+
+        if (Validator.validateFields(name, inputName, phone, inputPhone, email, inputEmail, profitString, inputProfit)) {
+            if (email.equals("")) {
+                email = "0";
+            }
+            if (address.equals("")) {
+                address = "0";
+            }
+            if (profitString.equals("")) {
+                profitString = "0";
+            }
+
+            String uri;
+            if (customerImageURI != null) {
+                uri = customerImageURI.toString();
+            } else {
+                uri = "0";
+            }
+
+            long profit = Validator.validateProfit(profitString);
+            Intent intent = getIntent();
+            if (intent.hasExtra("customer_id")) {
+                Long id = getIntent().getLongExtra("customer_id", 123456789);
+                manager.updateCustomer(id, uri, name, phone, email, address, dealDateValue, profit, state);
+                Toast.makeText(this, "Customer updated", Toast.LENGTH_SHORT).show();
+            } else {
+                manager.insertCustomer(new Customer(uri, name, phone, address, email, profit, dealDateValue, state));
+                Toast.makeText(this, "Customer inserted", Toast.LENGTH_SHORT).show();
+            }
+            Intent data = new Intent();
+            setResult(Activity.RESULT_OK, data);
+            onBackPressed();
+        }
     }
 
     private void openDatePicker() {
@@ -88,9 +203,31 @@ public class CustomerProfileActivity extends AppCompatActivity {
             day = selectedDay;
             month = selectedMonth;
             year = selectedYear;
-            dealDate.setText(new StringBuilder().append(selectedDay).append("-").append(selectedMonth + 1).append("-").append(selectedYear).toString());
+            Calendar c = Calendar.getInstance();
+            c.set(year, month, day, 0, 0);
+            selectedDate = c.getTimeInMillis();
+            dealDate.setText(formatDate(selectedDate));
         }
     };
+
+    public String formatDate(long date) {
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.UK);
+        return format.format(date);
+    }
+
+    private void setSpinner() {
+        stateSpinner = findViewById(R.id.state_spinner);
+
+        List<String> data = new ArrayList<>();
+        data.add(Customer.State.ANALISE.toString());
+        data.add(Customer.State.IN_PROGRESS.toString());
+        data.add(Customer.State.CLOSED.toString());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, data);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        stateSpinner.setAdapter(adapter);
+        stateSpinner.setPrompt("State");
+    }
 
 
     @Override
@@ -98,8 +235,8 @@ public class CustomerProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == 1) {
             if (data != null) {
-                Uri selectedImage = data.getData();
-                imageCustomer.setImageURI(selectedImage);
+                customerImageURI = data.getData();
+                imageCustomer.setImageURI(customerImageURI);
             }
         }
     }

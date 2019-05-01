@@ -2,8 +2,7 @@ package com.example.businessplanner.presentation.customers;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.media.Image;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 
 import com.example.businessplanner.R;
 import com.example.businessplanner.data.entities.Customer;
-import com.example.businessplanner.data.entities.Plan;
 import com.example.businessplanner.domain.DatabaseManager;
 
 import java.text.SimpleDateFormat;
@@ -69,12 +67,40 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
         final TextView state;
 
         void bind(final Customer customer, final OnItemClickListener listener) {
+            if (customer.uri_image.equals("0")) {
+                customersImage.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+            } else {
+                customersImage.setImageURI(Uri.parse(customer.uri_image));
+            }
+
             customersName.setText(customer.customer_name);
             customersPhone.setText(customer.phone);
-            customersEmail.setText(customer.email);
-            customersAddress.setText(customer.address);
-            profit.setText(String.valueOf(customer.profit));
-            dealDate.setText(formatDate(customer.deal_date));
+
+            if (!customer.email.equals("0")) {
+                customersEmail.setText(customer.email);
+            } else {
+                customersEmail.setText("no email");
+            }
+
+
+            if (!customer.address.equals("0")) {
+                customersAddress.setText(customer.address);
+            } else {
+                customersAddress.setText("no address");
+            }
+
+            if (customer.profit != 0) {
+                profit.setText(String.valueOf(customer.profit));
+            } else {
+                profit.setText("no profit");
+            }
+
+            if (customer.deal_date == 0) {
+                dealDate.setText("no date");
+            } else {
+                dealDate.setText(formatDate(customer.deal_date));
+            }
+
             state.setText(customer.state.toString());
 
             delete.setOnClickListener(v -> {

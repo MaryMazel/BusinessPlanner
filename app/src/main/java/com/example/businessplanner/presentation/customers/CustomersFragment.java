@@ -1,5 +1,6 @@
 package com.example.businessplanner.presentation.customers;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,17 +13,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.businessplanner.R;
 import com.example.businessplanner.data.entities.Customer;
 import com.example.businessplanner.domain.DatabaseManager;
 import com.example.businessplanner.presentation.MainActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CustomersFragment extends Fragment {
+    private static final int REQUEST_CODE = 1;
+
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private CustomersListAdapter adapter;
@@ -37,15 +38,11 @@ public class CustomersFragment extends Fragment {
     }
 
     private void setAdapter() {
-        // customers = manager.getCustomers();
-        List<Customer> customers = new ArrayList<>();
-        customers.add(new Customer("My Name is", "+6468455", "Науки 21а 123", "marymazel@outlook.com", 200000, 1556496000, Customer.State.ANALISE));
-        customers.add(new Customer("My Name Masha", "+6468487845", "Науки 21а 123", "marymazel@outlook.com", 200000, 1556496000, Customer.State.IN_PROGRESS));
-        customers.add(new Customer("My Name", "+64684515845", "Науки 21а 123", "marymazel@outlook.com", 200000, 1556496000, Customer.State.ANALISE));
-        customers.add(new Customer("My Name", "+646845", "Науки 21а 123", "marymazel@outlook.com", 200000, 1556496000, Customer.State.CLOSED));
+        customers = manager.getCustomers();
         adapter = new CustomersListAdapter(requireContext(), customers, customer -> {
-            //todo
-            Toast.makeText(requireContext(), customer.customer_name, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(requireContext(), CustomerProfileActivity.class);
+            intent.putExtra("customer_id", customer.id);
+            startActivityForResult(intent, REQUEST_CODE);
         });
     }
 
@@ -72,4 +69,19 @@ public class CustomersFragment extends Fragment {
         });
         return view;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int result, Intent data) {
+        super.onActivityResult(requestCode, result, data);
+        if (result == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
+            List<Customer> customers = manager.getCustomers();
+            recyclerView.setAdapter(new CustomersListAdapter(requireContext(), customers, customer -> {
+                Intent intent = new Intent(requireContext(), CustomerProfileActivity.class);
+                intent.putExtra("customer_id", customer.id);
+                startActivityForResult(intent, REQUEST_CODE);
+            }));
+        }
+        recyclerView.invalidate();
+    }
 }
+

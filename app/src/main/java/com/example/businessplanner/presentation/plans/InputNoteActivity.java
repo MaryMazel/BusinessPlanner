@@ -11,9 +11,7 @@ import com.example.businessplanner.R;
 import com.example.businessplanner.data.entities.Plan;
 import com.example.businessplanner.domain.DatabaseManager;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class InputNoteActivity extends Activity {
     private Toolbar toolbar;
@@ -51,11 +49,6 @@ public class InputNoteActivity extends Activity {
         Plan plan = manager.getPlan(id);
         editTextNote.setText(plan.note);
         editTextTitle.setText(plan.title);
-    }
-
-    public String formatDate(long date) {
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.UK);
-        return format.format(date);
     }
 
     public void saveNote() {

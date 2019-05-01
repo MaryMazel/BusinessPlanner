@@ -2,7 +2,6 @@ package com.example.businessplanner.presentation.plans;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -65,37 +64,22 @@ public class PlansListAdapter extends RecyclerView.Adapter<PlansListAdapter.View
             title.setText(plan.title);
             note.setText(plan.note);
             date.setText(formatDate(plan.date));
-            delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Confirmation")
-                            .setMessage("Do you really want to delete a plan: '" + plan.title + "'?")
-                            .setNegativeButton("No",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                        }
-                                    })
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    manager.deletePlan(plan.id);
-                                    plans.remove(getAdapterPosition());
-                                    notifyDataSetChanged();
-                                }
-                            });
-                    AlertDialog alert = builder.create();
-                    alert.show();
-                }
+            delete.setOnClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Confirmation")
+                        .setMessage("Do you really want to delete a plan: '" + plan.title + "'?")
+                        .setNegativeButton("No",
+                                (dialog, id) -> dialog.cancel())
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            manager.deletePlan(plan.id);
+                            plans.remove(getAdapterPosition());
+                            notifyDataSetChanged();
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
             });
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    listener.onItemClick(plan);
-                }
-            });
+            itemView.setOnClickListener(v -> listener.onItemClick(plan));
         }
-
 
 
         public String formatDate(long date) {
