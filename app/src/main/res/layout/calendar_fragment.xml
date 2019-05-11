@@ -20,22 +20,18 @@
             app:navigationIcon="@drawable/ic_menu_white_hamburger"
             app:title="@string/Calendar" />
 
-        <com.applandeo.materialcalendarview.CalendarView
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
             android:id="@+id/calendar_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:abbreviationsBarColor="@color/colorPrimary"
-            app:abbreviationsLabelsColor="@color/colorWhite"
-            app:datePicker="true"
-            app:daysLabelsColor="@color/colorSecondaryText"
-            app:headerColor="@color/colorPrimary"
-            app:pagesColor="@color/colorLightBlue"
-            app:selectionColor="@color/colorAccent"
-            app:selectionLabelColor="@color/colorPrimary"
-            app:todayLabelColor="#9E68A7"
-            app:type="many_days_picker">
+            android:background="@color/colorLightBlue"
+            app:mcv_dateTextAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:mcv_headerTextAppearance="@style/TextAppearance.AppCompat.Large"
+            app:mcv_monthLabels="@array/monthLabels"
+            app:mcv_selectionColor="@color/colorPrimary"
+            app:mcv_weekDayLabels="@array/weekDays">
 
-        </com.applandeo.materialcalendarview.CalendarView>
+        </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_calendar"

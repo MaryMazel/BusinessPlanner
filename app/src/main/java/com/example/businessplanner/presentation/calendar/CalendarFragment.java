@@ -1,6 +1,8 @@
 package com.example.businessplanner.presentation.calendar;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,18 +13,22 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.applandeo.materialcalendarview.CalendarView;
 import com.example.businessplanner.R;
 import com.example.businessplanner.data.entities.CalendarEvent;
 import com.example.businessplanner.domain.DatabaseManager;
 import com.example.businessplanner.presentation.MainActivity;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,7 +41,7 @@ public class CalendarFragment extends Fragment {
     private CalendarNotesListAdapter adapter;
     private DatabaseManager databaseManager;
     private List<CalendarEvent> events;
-    private CalendarView calendarView;
+    private MaterialCalendarView calendarView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,7 +55,7 @@ public class CalendarFragment extends Fragment {
         adapter = new CalendarNotesListAdapter(requireContext(), events, event -> {
             Intent intent = new Intent(requireContext(), NotePreviewActivity.class);
             intent.putExtra(EVENT_ID, event.id);
-            intent.putExtra(CURRENT_DATE, formatDate(calendarView.getFirstSelectedDate()));
+            intent.putExtra(CURRENT_DATE, formatDate(calendarView.getSelectedDate().getCalendar()));
             startActivityForResult(intent, REQUEST_CODE);
         });
         recyclerView.setAdapter(adapter);
@@ -62,12 +68,13 @@ public class CalendarFragment extends Fragment {
 
         calendarView = view.findViewById(R.id.calendar_view);
 
-        Calendar min = Calendar.getInstance();
-        min.set(2019, 1, 1);
-        calendarView.setMinimumDate(min);
+        calendarView.setCurrentDate(Calendar.getInstance().getTime());
+        calendarView.setSelectedDate(Calendar.getInstance().getTime());
 
-        calendarView.setOnDayClickListener(eventDay -> {
-            setAdapter(eventDay.getCalendar());
+        calendarView.addDecorator(new EventDecorator(getResources().getColor(R.color.colorAccent), getSelectedDates()));
+
+        calendarView.setOnDateChangedListener((widget, date, selected) -> {
+            setAdapter(date.getCalendar());
             adapter.notifyDataSetChanged();
         });
 
@@ -77,8 +84,9 @@ public class CalendarFragment extends Fragment {
         FloatingActionButton fab = view.findViewById(R.id.fab_calendar);
         fab.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), NotePreviewActivity.class);
-            intent.putExtra(CURRENT_DATE, formatDate(calendarView.getFirstSelectedDate()));
+            intent.putExtra(CURRENT_DATE, formatDate(calendarView.getSelectedDate().getCalendar()));
             startActivityForResult(intent, REQUEST_CODE);
+            calendarView.invalidateDecorators();
         });
 
         Toolbar toolbar = view.findViewById(R.id.toolbar_calendar);
@@ -86,9 +94,54 @@ public class CalendarFragment extends Fragment {
             MainActivity mainActivity = (MainActivity) requireActivity();
             mainActivity.showMenu();
         });
+        toolbar.inflateMenu(R.menu.calendar_picker_menu);
+        toolbar.setOnMenuItemClickListener(menuItem -> {
+            if (menuItem.getItemId() == R.id.pickDateItem) {
+                openDatePicker();
+            }
+            return true;
+        });
 
         return view;
     }
+
+    public void openDatePicker() {
+        Calendar today = Calendar.getInstance();
+        int day = today.get(Calendar.DAY_OF_MONTH);
+        int month = today.get(Calendar.MONTH);
+        int year = today.get(Calendar.YEAR);
+
+        DatePickerDialog dialog = new DatePickerDialog(requireContext(),
+                R.style.CustomDatePickerDialogTheme,
+                (view, year1, month1, dayOfMonth) -> {
+            Calendar cal = Calendar.getInstance();
+            cal.set(year1, month1, dayOfMonth);
+            calendarView.setCurrentDate(cal);
+            calendarView.setSelectedDate(cal);
+        }, year,
+                month,
+                day);
+        dialog.show();
+    }
+
+    public List<Calendar> getSelectedDates() {
+        List<Calendar> dates = new ArrayList<>();
+        List<CalendarEvent> calendarEvents = databaseManager.getCalendarEvents();
+        for (CalendarEvent calendarEvent : calendarEvents) {
+            SimpleDateFormat format = new SimpleDateFormat("EEE dd MMM yyyy", Locale.UK);
+            Date date = null;
+            try {
+                date = format.parse(calendarEvent.date);
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+                dates.add(cal);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return dates;
+    }
+
 
     public String formatDate(Calendar date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd MMM yyyy", Locale.UK);
@@ -100,8 +153,9 @@ public class CalendarFragment extends Fragment {
         super.onActivityResult(requestCode, result, data);
         getActivity();
         if (result == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
-            setAdapter(calendarView.getFirstSelectedDate());
+            setAdapter(calendarView.getSelectedDate().getCalendar());
             recyclerView.invalidate();
+            calendarView.invalidateDecorators();
         }
     }
 }

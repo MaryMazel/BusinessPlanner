@@ -10,4 +10,14 @@
         <item name="android:textSize">16sp</item> <!-- menu item text size-->
     </style>
 
+    <style name="CustomDatePickerDialogTheme" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:datePickerStyle">@style/MyDatePickerStyle</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="MyDatePickerStyle" parent="@android:style/Widget.Material.DatePicker">
+        <item name="android:datePickerMode">spinner</item>
+    </style>
 </resources>
