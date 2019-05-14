@@ -9,7 +9,7 @@ public class Customer {
     @PrimaryKey(autoGenerate = true)
     public long id;
 
-    public String uri_image;
+    public String imageName;
 
     public String customer_name;
 
@@ -26,8 +26,8 @@ public class Customer {
     @TypeConverters(StateConverter.class)
     public State state;
 
-    public Customer(String uri_image, String customer_name, String phone, String address, String email, long profit, long deal_date, State state) {
-        this.uri_image = uri_image;
+    public Customer(String imageName, String customer_name, String phone, String address, String email, long profit, long deal_date, State state) {
+        this.imageName = imageName;
         this.customer_name = customer_name;
         this.phone = phone;
         this.address = address;

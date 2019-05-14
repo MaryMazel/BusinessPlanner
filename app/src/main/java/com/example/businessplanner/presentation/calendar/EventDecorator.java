@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class EventDecorator implements DayViewDecorator {
-
     private final int color;
     private final HashSet<Calendar> dates;
 

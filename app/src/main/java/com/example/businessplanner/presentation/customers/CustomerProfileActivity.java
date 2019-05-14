@@ -1,10 +1,14 @@
 package com.example.businessplanner.presentation.customers;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
@@ -17,11 +21,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.businessplanner.R;
 import com.example.businessplanner.data.entities.Customer;
 import com.example.businessplanner.domain.DatabaseManager;
 import com.example.businessplanner.presentation.utils.Validator;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -76,7 +85,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
         fab.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-            startActivityForResult(Intent.createChooser(intent, "select a picture"), 1);
+            startActivityForResult(Intent.createChooser(intent, "select a picture"), 10);
         });
 
         Intent intent = getIntent();
@@ -88,9 +97,14 @@ public class CustomerProfileActivity extends AppCompatActivity {
     private void openNote() {
         Long id = getIntent().getLongExtra("customer_id", 123456789);
         Customer customer = manager.getCustomerByID(id);
-        if (!customer.uri_image.equals("0")) {
-            imageCustomer.setImageURI(Uri.parse(customer.uri_image));
-            customerImageURI = Uri.parse(customer.uri_image);
+        if (!customer.imageName.equals("0")) {
+
+            Glide.with(this).
+                    load(customer.imageName).
+                    into(imageCustomer);
+            Toast.makeText(this, "Image loaded", Toast.LENGTH_SHORT).show();
+
+            customerImageURI = Uri.parse(customer.imageName);
         }
         inputName.getEditText().setText(customer.customer_name);
         inputPhone.getEditText().setText(customer.phone);
@@ -138,6 +152,27 @@ public class CustomerProfileActivity extends AppCompatActivity {
         });
     }
 
+    private void saveImageAsFile(String fileName, ImageView iv) {
+        FileOutputStream outStream = null;
+
+        try {
+            File sdCard = Environment.getExternalStorageDirectory();
+            File dir = new File(sdCard.getAbsolutePath());
+
+            File outFile = new File(dir, fileName);
+
+            outStream = new FileOutputStream(outFile);
+            Bitmap bitmap = ((BitmapDrawable) iv.getDrawable()).getBitmap();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 85, outStream);
+            outStream.flush();
+            outStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void saveProfile() {
         String name = inputName.getEditText().getText().toString();
         String phone = inputPhone.getEditText().getText().toString();
@@ -170,21 +205,24 @@ public class CustomerProfileActivity extends AppCompatActivity {
                 profitString = "0";
             }
 
-            String uri;
+            String imageName;
             if (customerImageURI != null) {
-                uri = customerImageURI.toString();
+                @SuppressLint("DefaultLocale")
+                String fileName = String.format("%d.png", System.currentTimeMillis());
+                saveImageAsFile(fileName, imageCustomer);
+                imageName = fileName;
             } else {
-                uri = "0";
+                imageName = "0";
             }
 
             long profit = Validator.validateProfit(profitString);
             Intent intent = getIntent();
             if (intent.hasExtra("customer_id")) {
                 Long id = getIntent().getLongExtra("customer_id", 123456789);
-                manager.updateCustomer(id, uri, name, phone, email, address, dealDateValue, profit, state);
+                manager.updateCustomer(id, imageName, name, phone, email, address, dealDateValue, profit, state);
                 Toast.makeText(this, "Customer updated", Toast.LENGTH_SHORT).show();
             } else {
-                manager.insertCustomer(new Customer(uri, name, phone, address, email, profit, dealDateValue, state));
+                manager.insertCustomer(new Customer(imageName, name, phone, address, email, profit, dealDateValue, state));
                 Toast.makeText(this, "Customer inserted", Toast.LENGTH_SHORT).show();
             }
             Intent data = new Intent();
@@ -233,7 +271,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == 1) {
+        if (resultCode == Activity.RESULT_OK && requestCode == 10) {
             if (data != null) {
                 customerImageURI = data.getData();
                 imageCustomer.setImageURI(customerImageURI);

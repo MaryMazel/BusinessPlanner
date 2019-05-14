@@ -1,7 +1,6 @@
 package com.example.businessplanner.presentation.calendar;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -70,9 +68,7 @@ public class CalendarFragment extends Fragment {
 
         calendarView.setCurrentDate(Calendar.getInstance().getTime());
         calendarView.setSelectedDate(Calendar.getInstance().getTime());
-
-        calendarView.addDecorator(new EventDecorator(getResources().getColor(R.color.colorAccent), getSelectedDates()));
-
+        addDecorators();
         calendarView.setOnDateChangedListener((widget, date, selected) -> {
             setAdapter(date.getCalendar());
             adapter.notifyDataSetChanged();
@@ -105,6 +101,11 @@ public class CalendarFragment extends Fragment {
         return view;
     }
 
+    public void addDecorators() {
+        calendarView.addDecorator(new EventDecorator(getResources().getColor(R.color.colorAccent), getSelectedDates()));
+        calendarView.addDecorator(new TodayDecorator());
+    }
+
     public void openDatePicker() {
         Calendar today = Calendar.getInstance();
         int day = today.get(Calendar.DAY_OF_MONTH);
@@ -114,11 +115,11 @@ public class CalendarFragment extends Fragment {
         DatePickerDialog dialog = new DatePickerDialog(requireContext(),
                 R.style.CustomDatePickerDialogTheme,
                 (view, year1, month1, dayOfMonth) -> {
-            Calendar cal = Calendar.getInstance();
-            cal.set(year1, month1, dayOfMonth);
-            calendarView.setCurrentDate(cal);
-            calendarView.setSelectedDate(cal);
-        }, year,
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(year1, month1, dayOfMonth);
+                    calendarView.setCurrentDate(cal);
+                    calendarView.setSelectedDate(cal);
+                }, year,
                 month,
                 day);
         dialog.show();
@@ -155,7 +156,7 @@ public class CalendarFragment extends Fragment {
         if (result == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
             setAdapter(calendarView.getSelectedDate().getCalendar());
             recyclerView.invalidate();
-            calendarView.invalidateDecorators();
+            addDecorators();
         }
     }
 }

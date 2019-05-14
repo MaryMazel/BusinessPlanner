@@ -25,6 +25,6 @@ public interface CustomerDao {
     void deleteCustomer(long id);
 
     @TypeConverters(StateConverter.class)
-    @Query("update customer set uri_image = :uri, customer_name = :name, phone = :phone, email = :email, address = :address, deal_date = :dealDate, profit = :profit, state = :state where id = :id")
-    void updateCustomer(long id, String uri, String name, String phone, String email, String address, long dealDate, long profit, Customer.State state);
+    @Query("update customer set imageName = :imageName, customer_name = :name, phone = :phone, email = :email, address = :address, deal_date = :dealDate, profit = :profit, state = :state where id = :id")
+    void updateCustomer(long id, String imageName, String name, String phone, String email, String address, long dealDate, long profit, Customer.State state);
 }

@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.print.PrintHelper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -70,7 +71,7 @@ public class PlansFragment extends Fragment {
             MainActivity mainActivity = (MainActivity) requireActivity();
             mainActivity.showMenu();
         });
-
+        toolbar.inflateMenu(R.menu.plans_search);
         processMenuItems(toolbar);
 
         fab = view.findViewById(R.id.fab_plans);
@@ -82,8 +83,6 @@ public class PlansFragment extends Fragment {
     }
 
     private void processMenuItems(Toolbar toolbar) {
-        toolbar.inflateMenu(R.menu.plans_search);
-
         MenuItem actionSearch = toolbar.getMenu().findItem(R.id.action_search);
         SearchView searchView = (SearchView) actionSearch.getActionView();
 
@@ -168,13 +167,10 @@ public class PlansFragment extends Fragment {
         if (result == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
             List<Plan> plans = databaseManager.getPlans();
             Collections.reverse(plans);
-            recyclerView.setAdapter(new PlansListAdapter(requireContext(), plans, new PlansListAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(Plan plan) {
-                    Intent intent = new Intent(requireContext(), InputNoteActivity.class);
-                    intent.putExtra("plan_id", plan.id);
-                    startActivityForResult(intent, REQUEST_CODE);
-                }
+            recyclerView.setAdapter(new PlansListAdapter(requireContext(), plans, plan -> {
+                Intent intent = new Intent(requireContext(), InputNoteActivity.class);
+                intent.putExtra("plan_id", plan.id);
+                startActivityForResult(intent, REQUEST_CODE);
             }));
             recyclerView.invalidate();
         }

@@ -2,7 +2,7 @@ package com.example.businessplanner.presentation.customers;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.businessplanner.R;
 import com.example.businessplanner.data.entities.Customer;
 import com.example.businessplanner.domain.DatabaseManager;
@@ -67,10 +69,13 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
         final TextView state;
 
         void bind(final Customer customer, final OnItemClickListener listener) {
-            if (customer.uri_image.equals("0")) {
+            if (customer.imageName.equals("0")) {
                 customersImage.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
             } else {
-                customersImage.setImageURI(Uri.parse(customer.uri_image));
+                Glide.with(context).
+                        load(customer.imageName).
+                        into(customersImage);
+                Toast.makeText(context, "Image loaded", Toast.LENGTH_SHORT).show();
             }
 
             customersName.setText(customer.customer_name);
