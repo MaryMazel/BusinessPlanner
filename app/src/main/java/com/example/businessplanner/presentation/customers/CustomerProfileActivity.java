@@ -64,7 +64,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customer_profile_activity);
 
-        manager = new DatabaseManager(this);
+        manager = new DatabaseManager(this, orderDao);
 
         setToolbar();
 

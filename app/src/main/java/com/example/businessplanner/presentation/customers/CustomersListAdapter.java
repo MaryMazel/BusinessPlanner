@@ -2,7 +2,6 @@ package com.example.businessplanner.presentation.customers;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,7 +34,7 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
     CustomersListAdapter(Context context, List<Customer> customers, OnItemClickListener listener) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
-        this.manager = new DatabaseManager(context);
+        this.manager = new DatabaseManager(context, orderDao);
         this.listener = listener;
         this.customers = customers;
     }

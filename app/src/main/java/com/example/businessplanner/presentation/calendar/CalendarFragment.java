@@ -44,7 +44,7 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        databaseManager = new DatabaseManager(requireContext());
+        databaseManager = new DatabaseManager(requireContext(), orderDao);
     }
 
     public void setAdapter(Calendar calendar) {

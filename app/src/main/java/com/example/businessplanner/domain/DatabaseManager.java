@@ -7,9 +7,11 @@ import com.example.businessplanner.data.AppDatabase;
 import com.example.businessplanner.data.DatabaseInitializer;
 import com.example.businessplanner.data.dao.CalendarDao;
 import com.example.businessplanner.data.dao.CustomerDao;
+import com.example.businessplanner.data.dao.OrderDao;
 import com.example.businessplanner.data.dao.PlanDao;
 import com.example.businessplanner.data.entities.CalendarEvent;
 import com.example.businessplanner.data.entities.Customer;
+import com.example.businessplanner.data.entities.Order;
 import com.example.businessplanner.data.entities.Plan;
 
 import java.util.List;
@@ -19,12 +21,14 @@ public class DatabaseManager {
     private PlanDao planDao;
     private CalendarDao calendarDao;
     private CustomerDao customerDao;
+    private OrderDao orderDao;
 
     public DatabaseManager(@NonNull Context context) {
         database = DatabaseInitializer.createDatabase(context);
         this.planDao = database.planDao();
         this.calendarDao = database.calendarDao();
         this.customerDao = database.customerDao();
+        this.orderDao = database.orderDao();
     }
 
     //planDao region
@@ -100,8 +104,32 @@ public class DatabaseManager {
         customerDao.deleteCustomer(id);
     }
 
-    public void updateCustomer(long id, String imageName, String name, String phone, String email, String address, long dealDate, long profit, Customer.State state) {
-        customerDao.updateCustomer(id, imageName, name, phone, email, address, dealDate, profit, state);
+    public void updateCustomer(long id, String imageName, String name, String phone, String email) {
+        customerDao.updateCustomer(id, imageName, name, phone, email);
     }
     //customerDao end region
+
+    //orderDao region
+
+    public void insertOrder(Order order) {
+        orderDao.insert(order);
+    }
+
+    public List<Order> getOrders() {
+        return orderDao.getOrders();
+    }
+
+    public Order getOrderByID(long orderID) {
+        return orderDao.getOrderByID(orderID);
+    }
+
+    public List<Order> getCustomersOrders(long customerID) {
+        return orderDao.getCustomersOrders(customerID);
+    }
+
+    public void deleteOrder(long orderID) {
+        orderDao.deleteOrder(orderID);
+    }
+
+    //orderDao end region
 }

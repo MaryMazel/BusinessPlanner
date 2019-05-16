@@ -23,7 +23,7 @@ public class InputNoteActivity extends Activity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_plan_activity);
-        manager = new DatabaseManager(this);
+        manager = new DatabaseManager(this, orderDao);
 
         editTextNote = findViewById(R.id.note_et);
         editTextTitle = findViewById(R.id.title_et);

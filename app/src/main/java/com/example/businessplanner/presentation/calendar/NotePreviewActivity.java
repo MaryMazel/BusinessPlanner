@@ -23,7 +23,7 @@ public class NotePreviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.note_preview_activity);
 
-        manager = new DatabaseManager(this);
+        manager = new DatabaseManager(this, orderDao);
 
         et_note = findViewById(R.id.add_note_cal);
         Intent intent = getIntent();

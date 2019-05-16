@@ -24,12 +24,9 @@ public class OrdersFragment extends Fragment {
         View view = inflater.inflate(R.layout.orders_fragment, container, false);
 
         Toolbar toolbar = view.findViewById(R.id.toolbar_orders);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity mainActivity = (MainActivity) requireActivity();
-                mainActivity.showMenu();
-            }
+        toolbar.setNavigationOnClickListener(v -> {
+            MainActivity mainActivity = (MainActivity) requireActivity();
+            mainActivity.showMenu();
         });
         return view;
     }
