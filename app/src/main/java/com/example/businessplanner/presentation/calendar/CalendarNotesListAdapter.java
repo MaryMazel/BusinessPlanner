@@ -30,7 +30,7 @@ public class CalendarNotesListAdapter extends RecyclerView.Adapter<CalendarNotes
     CalendarNotesListAdapter(Context context, List<CalendarEvent> events, OnItemClickListener listener) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
-        this.manager = new DatabaseManager(context, orderDao);
+        this.manager = new DatabaseManager(context);
         this.calendarEvents = events;
         this.listener = listener;
     }

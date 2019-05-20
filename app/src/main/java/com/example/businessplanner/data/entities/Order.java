@@ -24,6 +24,24 @@ public class Order {
 
     public long deal_date;
 
+    public float capacity;
+
+    public float voltage;
+
+    public int reliability;
+
+    public String attachmentSpot;
+
+    public String meterType;
+
+    public int transformers;
+
+    @TypeConverters(StateConverter.class)
+    public Order.State state;
+
+    @TypeConverters(OrderTypeConverter.class)
+    public Order.OrderType orderType;
+
     public Order(long customerID, String address, String description,
                  NetworkOwner networkOwner, long deal_date, float capacity,
                  float voltage, int reliability, String attachmentSpot, String meterType,
@@ -42,24 +60,6 @@ public class Order {
         this.state = state;
         this.orderType = orderType;
     }
-
-    public float capacity;
-
-    public float voltage;
-
-    public int reliability;
-
-    public String attachmentSpot;
-
-    public String meterType;
-
-    public int transformers;
-
-    @TypeConverters(StateConverter.class)
-    public Order.State state;
-
-    @TypeConverters(OrderTypeConverter.class)
-    public Order.OrderType orderType;
 
     public enum State {
         ANALISE(0),

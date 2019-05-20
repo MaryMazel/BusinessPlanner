@@ -10,13 +10,11 @@ import java.util.regex.Pattern;
 public class Validator {
     public static boolean validateFields(String name, TextInputLayout layoutName,
                                          String phone, TextInputLayout layoutPhone,
-                                         String email, TextInputLayout layoutEmail,
-                                         String profit, TextInputLayout layoutProfit) {
+                                         String email, TextInputLayout layoutEmail) {
         List<Boolean> validFields = new ArrayList<>();
         validFields.add(validateName(name, layoutName));
         validFields.add(validatePhone(phone, layoutPhone));
         validFields.add(validateEmail(email, layoutEmail));
-        validFields.add(validateProfit(profit, layoutProfit));
 
         for (Boolean validField : validFields) {
             if (!validField) {

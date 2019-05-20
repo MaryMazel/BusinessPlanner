@@ -11,17 +11,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:padding="4dp">
 
         <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/customer_image"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/gradient_order_background"
                 android:contentDescription="@string/no_image_yet"
                 android:scaleType="centerInside" />
 
@@ -35,62 +36,68 @@
                 android:src="@drawable/ic_delete_forever_black_24dp" />
         </FrameLayout>
 
-        <TextView
-            android:id="@+id/customer_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:text="Name Surname"
-            android:textAlignment="center"
-            android:textSize="18sp" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="4dp">
+            android:orientation="vertical">
 
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/customer_name"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/phone"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="16sp" />
+                android:layout_margin="4dp"
+                android:text="Name Surname"
+                android:textAlignment="center"
+                android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/phone_number"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:textColor="@color/colorSecondaryText"
-                android:textSize="16sp" />
+                android:orientation="horizontal"
+                android:padding="4dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/phone"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/phone_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:textColor="@color/colorSecondaryText"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="4dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/email"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/email_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:textColor="@color/colorSecondaryText"
+                    android:textSize="16sp" />
+            </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="4dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/email"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/email_card"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:textColor="@color/colorSecondaryText"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -106,29 +113,6 @@
 
             <TextView
                 android:id="@+id/customers_address"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:textColor="@color/colorSecondaryText"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="4dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/profit"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/profit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -180,6 +164,6 @@
                 android:layout_weight="2"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="16sp" />
-        </LinearLayout>
+        </LinearLayout>-->
     </LinearLayout>
 </android.support.v7.widget.CardView>

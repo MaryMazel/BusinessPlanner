@@ -2,7 +2,6 @@ package com.example.businessplanner.presentation.customers;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,11 +13,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -31,11 +26,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
 
 public class CustomerProfileActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -44,27 +34,22 @@ public class CustomerProfileActivity extends AppCompatActivity {
     private TextInputLayout inputName;
     private TextInputLayout inputEmail;
     private TextInputLayout inputPhone;
-    private TextInputLayout inputAddress;
+    /*private TextInputLayout inputAddress;
     private TextInputLayout inputProfit;
     private Spinner stateSpinner;
     private ImageView datePickerButton;
-    private TextView dealDate;
+    private TextView dealDate;*/
 
     private Uri customerImageURI;
-    private long selectedDate;
 
     private DatabaseManager manager;
-
-    int day = 1;
-    int month = 0;
-    int year = 2019;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customer_profile_activity);
 
-        manager = new DatabaseManager(this, orderDao);
+        manager = new DatabaseManager(this);
 
         setToolbar();
 
@@ -72,14 +57,9 @@ public class CustomerProfileActivity extends AppCompatActivity {
         inputName = findViewById(R.id.profile_name);
         inputPhone = findViewById(R.id.profile_phone);
         inputEmail = findViewById(R.id.profile_email);
-        inputProfit = findViewById(R.id.profile_profit);
-        inputAddress = findViewById(R.id.profile_address);
+        //datePickerButton.setOnClickListener(v -> openDatePicker());
+        //setSpinner();
 
-        setSpinner();
-
-        dealDate = findViewById(R.id.profile_deal_date);
-        datePickerButton = findViewById(R.id.date_picker_dialog);
-        datePickerButton.setOnClickListener(v -> openDatePicker());
 
         FloatingActionButton fab = findViewById(R.id.fab_profile);
         fab.setOnClickListener(v -> {
@@ -115,7 +95,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
             inputEmail.getEditText().setText(customer.email);
         }
 
-        if (customer.address.equals("0")) {
+        /*if (customer.address.equals("0")) {
             inputAddress.getEditText().setText("");
         } else {
             inputAddress.getEditText().setText(customer.address);
@@ -131,7 +111,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
             dealDate.setText("");
         }
 
-        stateSpinner.setSelection(customer.state.getCode());
+        stateSpinner.setSelection(customer.state.getCode());*/
     }
 
     private void setToolbar() {
@@ -177,10 +157,9 @@ public class CustomerProfileActivity extends AppCompatActivity {
         String name = inputName.getEditText().getText().toString();
         String phone = inputPhone.getEditText().getText().toString();
         String email = inputEmail.getEditText().getText().toString();
-        String address = inputAddress.getEditText().getText().toString();
-        String profitString = inputProfit.getEditText().getText().toString();
+        //String address = inputAddress.getEditText().getText().toString();
 
-        long dealDateValue = selectedDate;
+        /*long dealDateValue = selectedDate;
         Customer.State state = null;
         switch (stateSpinner.getSelectedItem().toString()) {
             case "ANALISE":
@@ -192,17 +171,11 @@ public class CustomerProfileActivity extends AppCompatActivity {
             case "CLOSED":
                 state = Customer.State.CLOSED;
                 break;
-        }
+        }*/
 
-        if (Validator.validateFields(name, inputName, phone, inputPhone, email, inputEmail, profitString, inputProfit)) {
+        if (Validator.validateFields(name, inputName, phone, inputPhone, email, inputEmail)) {
             if (email.equals("")) {
                 email = "0";
-            }
-            if (address.equals("")) {
-                address = "0";
-            }
-            if (profitString.equals("")) {
-                profitString = "0";
             }
 
             String imageName;
@@ -215,14 +188,14 @@ public class CustomerProfileActivity extends AppCompatActivity {
                 imageName = "0";
             }
 
-            long profit = Validator.validateProfit(profitString);
+            //long profit = Validator.validateProfit(profitString);
             Intent intent = getIntent();
             if (intent.hasExtra("customer_id")) {
                 Long id = getIntent().getLongExtra("customer_id", 123456789);
-                manager.updateCustomer(id, imageName, name, phone, email, address, dealDateValue, profit, state);
+                manager.updateCustomer(id, imageName, name, phone, email);
                 Toast.makeText(this, "Customer updated", Toast.LENGTH_SHORT).show();
             } else {
-                manager.insertCustomer(new Customer(imageName, name, phone, address, email, profit, dealDateValue, state));
+                manager.insertCustomer(new Customer(imageName, name, phone, email));
                 Toast.makeText(this, "Customer inserted", Toast.LENGTH_SHORT).show();
             }
             Intent data = new Intent();
@@ -231,11 +204,11 @@ public class CustomerProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void openDatePicker() {
+    /*private void openDatePicker() {
         new DatePickerDialog(this, datePickerListener, year, month, day).show();
     }
-
-    private DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
+*/
+   /* private DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int selectedYear,
                               int selectedMonth, int selectedDay) {
             day = selectedDay;
@@ -246,15 +219,15 @@ public class CustomerProfileActivity extends AppCompatActivity {
             selectedDate = c.getTimeInMillis();
             dealDate.setText(formatDate(selectedDate));
         }
-    };
+    };*/
 
-    public String formatDate(long date) {
+   /* public String formatDate(long date) {
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.UK);
         return format.format(date);
-    }
+    }*/
 
     private void setSpinner() {
-        stateSpinner = findViewById(R.id.state_spinner);
+       /* stateSpinner = findViewById(R.id.state_spinner);
 
         List<String> data = new ArrayList<>();
         data.add(Customer.State.ANALISE.toString());
@@ -264,7 +237,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         stateSpinner.setAdapter(adapter);
-        stateSpinner.setPrompt("State");
+        stateSpinner.setPrompt("State");*/
     }
 
 

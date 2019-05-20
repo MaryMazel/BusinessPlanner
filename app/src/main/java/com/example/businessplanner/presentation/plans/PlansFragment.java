@@ -42,7 +42,7 @@ public class PlansFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        databaseManager = new DatabaseManager(requireContext(), orderDao);
+        databaseManager = new DatabaseManager(requireContext());
         setAdapter();
     }
 

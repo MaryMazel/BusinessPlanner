@@ -27,6 +27,7 @@
         </activity>
         <activity android:name=".presentation.calendar.NotePreviewActivity" />
         <activity android:name=".presentation.customers.CustomerProfileActivity" />
+        <activity android:name=".presentation.orders.OrderInputActivity" />
     </application>
 
 </manifest>

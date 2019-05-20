@@ -32,7 +32,7 @@ public class PlansListAdapter extends RecyclerView.Adapter<PlansListAdapter.View
     PlansListAdapter(Context context, List<Plan> plans, OnItemClickListener listener) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
-        this.manager = new DatabaseManager(context, orderDao);
+        this.manager = new DatabaseManager(context);
         this.plans = plans;
         this.listener = listener;
     }

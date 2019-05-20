@@ -34,7 +34,7 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
     CustomersListAdapter(Context context, List<Customer> customers, OnItemClickListener listener) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
-        this.manager = new DatabaseManager(context, orderDao);
+        this.manager = new DatabaseManager(context);
         this.listener = listener;
         this.customers = customers;
     }
@@ -62,10 +62,6 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
         final TextView customersName;
         final TextView customersPhone;
         final TextView customersEmail;
-        final TextView customersAddress;
-        final TextView profit;
-        final TextView dealDate;
-        final TextView state;
 
         void bind(final Customer customer, final OnItemClickListener listener) {
             if (customer.imageName.equals("0")) {
@@ -87,7 +83,7 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
             }
 
 
-            if (!customer.address.equals("0")) {
+            /*if (!customer.address.equals("0")) {
                 customersAddress.setText(customer.address);
             } else {
                 customersAddress.setText("no address");
@@ -106,7 +102,7 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
             }
 
             state.setText(customer.state.toString());
-
+*/
             delete.setOnClickListener(v -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Confirmation")
@@ -135,11 +131,7 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
             delete = view.findViewById(R.id.delete_customer);
             customersName = view.findViewById(R.id.customer_name);
             customersEmail = view.findViewById(R.id.email_card);
-            customersAddress = view.findViewById(R.id.customers_address);
             customersPhone = view.findViewById(R.id.phone_number);
-            profit = view.findViewById(R.id.profit);
-            dealDate = view.findViewById(R.id.deal_date);
-            state = view.findViewById(R.id.state);
         }
     }
 }

@@ -16,7 +16,7 @@ public class Customer {
 
     public String email;
 
-    public Customer(String imageName, String customer_name, String phone, String address, String email) {
+    public Customer(String imageName, String customer_name, String phone, String email) {
         this.imageName = imageName;
         this.customer_name = customer_name;
         this.phone = phone;
