@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.businessplanner.R;
 import com.example.businessplanner.data.entities.Customer;
 import com.example.businessplanner.domain.DatabaseManager;
@@ -64,12 +65,16 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
         final TextView customersEmail;
 
         void bind(final Customer customer, final OnItemClickListener listener) {
-            if (customer.imageName.equals("0")) {
-                customersImage.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+            if (customer.imageName.equals("no picture")) {
+                Glide.with(context)
+                        .load(R.drawable.round_shape_with_gradient)
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(customersImage);
             } else {
-                Glide.with(context).
-                        load(customer.imageName).
-                        into(customersImage);
+                Glide.with(context)
+                        .load(Integer.parseInt(customer.imageName))
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(customersImage);
                 Toast.makeText(context, "Image loaded", Toast.LENGTH_SHORT).show();
             }
 
@@ -81,7 +86,6 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
             } else {
                 customersEmail.setText("no email");
             }
-
 
             /*if (!customer.address.equals("0")) {
                 customersAddress.setText(customer.address);

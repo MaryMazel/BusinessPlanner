@@ -1,13 +1,9 @@
 package com.example.businessplanner.presentation.customers;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
@@ -17,15 +13,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.businessplanner.R;
 import com.example.businessplanner.data.entities.Customer;
 import com.example.businessplanner.domain.DatabaseManager;
 import com.example.businessplanner.presentation.utils.Validator;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class CustomerProfileActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -39,10 +31,9 @@ public class CustomerProfileActivity extends AppCompatActivity {
     private Spinner stateSpinner;
     private ImageView datePickerButton;
     private TextView dealDate;*/
-
-    private Uri customerImageURI;
-
     private DatabaseManager manager;
+
+    int pictureCustomer = R.drawable.round_shape_with_gradient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,13 +51,8 @@ public class CustomerProfileActivity extends AppCompatActivity {
         //datePickerButton.setOnClickListener(v -> openDatePicker());
         //setSpinner();
 
-
         FloatingActionButton fab = findViewById(R.id.fab_profile);
-        fab.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-            startActivityForResult(Intent.createChooser(intent, "select a picture"), 10);
-        });
+        fab.setOnClickListener(v -> choosePicture());
 
         Intent intent = getIntent();
         if (intent.hasExtra("customer_id")) {
@@ -74,18 +60,56 @@ public class CustomerProfileActivity extends AppCompatActivity {
         }
     }
 
+    public void choosePicture() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose logo")
+                .setItems(R.array.customer_logos, (dialog, which) -> {
+                    int picture = R.drawable.round_shape_with_gradient;
+                    switch (which) {
+                        case 0:
+                            picture = R.drawable.kharkovoblenergo;
+                            break;
+                        case 1:
+                            picture = R.drawable.kievoblenergo;
+                            break;
+                        case 2:
+                            picture = R.drawable.khersonoblenergo;
+                            break;
+                        case 3:
+                            picture = R.drawable.zhylkomservice;
+                            break;
+                        case 4:
+                            picture = R.drawable.osbb;
+                            break;
+                        case 5:
+                            picture = R.drawable.factory;
+                            break;
+                    }
+
+                    Glide.with(getApplicationContext())
+                            .load(picture)
+                            .apply(RequestOptions.circleCropTransform())
+                            .into(imageCustomer);
+
+                    pictureCustomer = picture;
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel())
+                .show();
+    }
+
     private void openNote() {
         Long id = getIntent().getLongExtra("customer_id", 123456789);
         Customer customer = manager.getCustomerByID(id);
-        if (!customer.imageName.equals("0")) {
+        if (!customer.imageName.equals("no picture")) {
+            Glide.with(this)
+                    .load(Integer.parseInt(customer.imageName))
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(imageCustomer);
 
-            Glide.with(this).
-                    load(customer.imageName).
-                    into(imageCustomer);
+            pictureCustomer = Integer.parseInt(customer.imageName);
             Toast.makeText(this, "Image loaded", Toast.LENGTH_SHORT).show();
-
-            customerImageURI = Uri.parse(customer.imageName);
         }
+
         inputName.getEditText().setText(customer.customer_name);
         inputPhone.getEditText().setText(customer.phone);
 
@@ -132,27 +156,6 @@ public class CustomerProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void saveImageAsFile(String fileName, ImageView iv) {
-        FileOutputStream outStream = null;
-
-        try {
-            File sdCard = Environment.getExternalStorageDirectory();
-            File dir = new File(sdCard.getAbsolutePath());
-
-            File outFile = new File(dir, fileName);
-
-            outStream = new FileOutputStream(outFile);
-            Bitmap bitmap = ((BitmapDrawable) iv.getDrawable()).getBitmap();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 85, outStream);
-            outStream.flush();
-            outStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void saveProfile() {
         String name = inputName.getEditText().getText().toString();
         String phone = inputPhone.getEditText().getText().toString();
@@ -179,13 +182,11 @@ public class CustomerProfileActivity extends AppCompatActivity {
             }
 
             String imageName;
-            if (customerImageURI != null) {
-                @SuppressLint("DefaultLocale")
-                String fileName = String.format("%d.png", System.currentTimeMillis());
-                saveImageAsFile(fileName, imageCustomer);
-                imageName = fileName;
+            if (imageCustomer.getDrawable() != null) {
+                int picture = pictureCustomer;
+                imageName = String.valueOf(picture);
             } else {
-                imageName = "0";
+                imageName = "no picture";
             }
 
             //long profit = Validator.validateProfit(profitString);
@@ -238,17 +239,5 @@ public class CustomerProfileActivity extends AppCompatActivity {
 
         stateSpinner.setAdapter(adapter);
         stateSpinner.setPrompt("State");*/
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == 10) {
-            if (data != null) {
-                customerImageURI = data.getData();
-                imageCustomer.setImageURI(customerImageURI);
-            }
-        }
     }
 }

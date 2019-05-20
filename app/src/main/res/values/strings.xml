@@ -41,6 +41,15 @@
         <item>December</item>
     </array>
 
+    <array name="customer_logos">
+        <item>Kharkovoblenergo</item>
+        <item>Kievoblenergo</item>
+        <item>Khersonoblenergo</item>
+        <item>Zhylkomservice</item>
+        <item>OSBB</item>
+        <item>Factory</item>
+    </array>
+
     <string name="phone">Phone:</string>
     <string name="email">Email:</string>
     <string name="address">Address:</string>
