@@ -26,11 +26,6 @@ public class CustomerProfileActivity extends AppCompatActivity {
     private TextInputLayout inputName;
     private TextInputLayout inputEmail;
     private TextInputLayout inputPhone;
-    /*private TextInputLayout inputAddress;
-    private TextInputLayout inputProfit;
-    private Spinner stateSpinner;
-    private ImageView datePickerButton;
-    private TextView dealDate;*/
     private DatabaseManager manager;
 
     int pictureCustomer = R.drawable.round_shape_with_gradient;
@@ -203,41 +198,5 @@ public class CustomerProfileActivity extends AppCompatActivity {
             setResult(Activity.RESULT_OK, data);
             onBackPressed();
         }
-    }
-
-    /*private void openDatePicker() {
-        new DatePickerDialog(this, datePickerListener, year, month, day).show();
-    }
-*/
-   /* private DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
-        public void onDateSet(DatePicker view, int selectedYear,
-                              int selectedMonth, int selectedDay) {
-            day = selectedDay;
-            month = selectedMonth;
-            year = selectedYear;
-            Calendar c = Calendar.getInstance();
-            c.set(year, month, day, 0, 0);
-            selectedDate = c.getTimeInMillis();
-            dealDate.setText(formatDate(selectedDate));
-        }
-    };*/
-
-   /* public String formatDate(long date) {
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.UK);
-        return format.format(date);
-    }*/
-
-    private void setSpinner() {
-       /* stateSpinner = findViewById(R.id.state_spinner);
-
-        List<String> data = new ArrayList<>();
-        data.add(Customer.State.ANALISE.toString());
-        data.add(Customer.State.IN_PROGRESS.toString());
-        data.add(Customer.State.CLOSED.toString());
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, data);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        stateSpinner.setAdapter(adapter);
-        stateSpinner.setPrompt("State");*/
     }
 }

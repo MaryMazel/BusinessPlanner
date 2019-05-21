@@ -19,6 +19,9 @@ public interface CustomerDao {
     @Query("select * from Customer where id = :id")
     Customer getCustomerByID(long id);
 
+    @Query("select customer_name from Customer where id = :id")
+    String getCustomerName (long id);
+
     @Query("delete from customer where id = :id")
     void deleteCustomer(long id);
 

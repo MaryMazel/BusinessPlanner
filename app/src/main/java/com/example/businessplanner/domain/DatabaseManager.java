@@ -100,6 +100,10 @@ public class DatabaseManager {
         return customerDao.getCustomerByID(id);
     }
 
+    public String getCustomerName(long id) {
+        return customerDao.getCustomerName(id);
+    }
+
     public void deleteCustomer(long id) {
         customerDao.deleteCustomer(id);
     }
