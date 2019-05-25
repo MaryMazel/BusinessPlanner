@@ -43,15 +43,13 @@ public class CustomerProfileActivity extends AppCompatActivity {
         inputName = findViewById(R.id.profile_name);
         inputPhone = findViewById(R.id.profile_phone);
         inputEmail = findViewById(R.id.profile_email);
-        //datePickerButton.setOnClickListener(v -> openDatePicker());
-        //setSpinner();
 
         FloatingActionButton fab = findViewById(R.id.fab_profile);
         fab.setOnClickListener(v -> choosePicture());
 
         Intent intent = getIntent();
         if (intent.hasExtra("customer_id")) {
-            openNote();
+            openCustomer();
         }
     }
 
@@ -92,7 +90,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void openNote() {
+    private void openCustomer() {
         Long id = getIntent().getLongExtra("customer_id", 123456789);
         Customer customer = manager.getCustomerByID(id);
         if (!customer.imageName.equals("no picture")) {
@@ -113,24 +111,6 @@ public class CustomerProfileActivity extends AppCompatActivity {
         } else {
             inputEmail.getEditText().setText(customer.email);
         }
-
-        /*if (customer.address.equals("0")) {
-            inputAddress.getEditText().setText("");
-        } else {
-            inputAddress.getEditText().setText(customer.address);
-        }
-
-        if (customer.profit == 0) {
-            inputProfit.getEditText().setText("");
-        } else {
-            inputEmail.getEditText().setText(customer.email);
-        }
-
-        if (customer.deal_date == 0) {
-            dealDate.setText("");
-        }
-
-        stateSpinner.setSelection(customer.state.getCode());*/
     }
 
     private void setToolbar() {
@@ -155,21 +135,6 @@ public class CustomerProfileActivity extends AppCompatActivity {
         String name = inputName.getEditText().getText().toString();
         String phone = inputPhone.getEditText().getText().toString();
         String email = inputEmail.getEditText().getText().toString();
-        //String address = inputAddress.getEditText().getText().toString();
-
-        /*long dealDateValue = selectedDate;
-        Customer.State state = null;
-        switch (stateSpinner.getSelectedItem().toString()) {
-            case "ANALISE":
-                state = Customer.State.ANALISE;
-                break;
-            case "IN_PROGRESS":
-                state = Customer.State.IN_PROGRESS;
-                break;
-            case "CLOSED":
-                state = Customer.State.CLOSED;
-                break;
-        }*/
 
         if (Validator.validateFields(name, inputName, phone, inputPhone, email, inputEmail)) {
             if (email.equals("")) {

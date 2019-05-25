@@ -72,6 +72,7 @@ public class DatabaseManager {
     public CalendarEvent getEvent(long id) {
         return calendarDao.getEvent(id);
     }
+
     public void deleteEvent(long id) {
         calendarDao.deleteEvent(id);
     }
@@ -104,6 +105,10 @@ public class DatabaseManager {
         return customerDao.getCustomerName(id);
     }
 
+    public long getCustomerID(String name) {
+        return customerDao.getCustomerID(name);
+    }
+
     public void deleteCustomer(long id) {
         customerDao.deleteCustomer(id);
     }
@@ -111,6 +116,7 @@ public class DatabaseManager {
     public void updateCustomer(long id, String imageName, String name, String phone, String email) {
         customerDao.updateCustomer(id, imageName, name, phone, email);
     }
+
     //customerDao end region
 
     //orderDao region
@@ -133,6 +139,14 @@ public class DatabaseManager {
 
     public void deleteOrder(long orderID) {
         orderDao.deleteOrder(orderID);
+    }
+
+    public void updateOrder(long orderID, long customerID, String address, String description,
+                     Order.NetworkOwner networkOwner, long deal_date, float capacity,
+                     float voltage, int reliability, String attachmentSpot, String meterType,
+                     int transformers, Order.State state, Order.OrderType orderType) {
+        orderDao.updateOrder(orderID, customerID, address, description, networkOwner, deal_date,
+                capacity, voltage, reliability, attachmentSpot, meterType, transformers, state, orderType);
     }
 
     //orderDao end region

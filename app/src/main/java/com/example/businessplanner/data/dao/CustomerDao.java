@@ -20,7 +20,10 @@ public interface CustomerDao {
     Customer getCustomerByID(long id);
 
     @Query("select customer_name from Customer where id = :id")
-    String getCustomerName (long id);
+    String getCustomerName(long id);
+
+    @Query("select id from Customer where customer_name = :name")
+    long getCustomerID(String name);
 
     @Query("delete from customer where id = :id")
     void deleteCustomer(long id);

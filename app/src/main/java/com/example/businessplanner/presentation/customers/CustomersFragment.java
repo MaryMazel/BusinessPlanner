@@ -18,6 +18,7 @@ import com.example.businessplanner.R;
 import com.example.businessplanner.data.entities.Customer;
 import com.example.businessplanner.domain.DatabaseManager;
 import com.example.businessplanner.presentation.MainActivity;
+import com.example.businessplanner.presentation.orders.OrdersFragment;
 
 import java.util.List;
 
@@ -39,10 +40,24 @@ public class CustomersFragment extends Fragment {
 
     private void setAdapter() {
         customers = manager.getCustomers();
-        adapter = new CustomersListAdapter(requireContext(), customers, customer -> {
-            Intent intent = new Intent(requireContext(), CustomerProfileActivity.class);
-            intent.putExtra("customer_id", customer.id);
-            startActivityForResult(intent, REQUEST_CODE);
+        adapter = new CustomersListAdapter(requireContext(), customers, new CustomersListAdapter.OnItemClickListener() {
+            @Override
+            public void onEditClick(Customer customer) {
+                Intent intent = new Intent(requireContext(), CustomerProfileActivity.class);
+                intent.putExtra("customer_id", customer.id);
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+
+            @Override
+            public void onCustomerClick(Customer customer) {
+                Bundle bundle = new Bundle();
+                bundle.putString("customer", String.valueOf(customer.id));
+
+                OrdersFragment ordersFragment = new OrdersFragment();
+                ordersFragment.setArguments(bundle);
+
+                getChildFragmentManager().beginTransaction().add(R.id.customers_layout, ordersFragment).commit();
+            }
         });
     }
 
@@ -75,10 +90,24 @@ public class CustomersFragment extends Fragment {
         super.onActivityResult(requestCode, result, data);
         if (result == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
             List<Customer> customers = manager.getCustomers();
-            recyclerView.setAdapter(new CustomersListAdapter(requireContext(), customers, customer -> {
-                Intent intent = new Intent(requireContext(), CustomerProfileActivity.class);
-                intent.putExtra("customer_id", customer.id);
-                startActivityForResult(intent, REQUEST_CODE);
+            recyclerView.setAdapter(new CustomersListAdapter(requireContext(), customers, new CustomersListAdapter.OnItemClickListener() {
+                @Override
+                public void onEditClick(Customer customer) {
+                    Intent intent = new Intent(requireContext(), CustomerProfileActivity.class);
+                    intent.putExtra("customer_id", customer.id);
+                    startActivityForResult(intent, REQUEST_CODE);
+                }
+
+                @Override
+                public void onCustomerClick(Customer customer) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("customer", String.valueOf(customer.id));
+
+                    OrdersFragment ordersFragment = new OrdersFragment();
+                    ordersFragment.setArguments(bundle);
+
+                    getChildFragmentManager().beginTransaction().add(R.id.customers_layout, ordersFragment).commit();
+                }
             }));
         }
         recyclerView.invalidate();

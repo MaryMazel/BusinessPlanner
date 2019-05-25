@@ -58,6 +58,7 @@ public class CalendarNotesListAdapter extends RecyclerView.Adapter<CalendarNotes
 
         void bind(final CalendarEvent event, final OnItemClickListener listener) {
             text.setText(event.text);
+
             delete.setOnClickListener(v -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Confirmation")
@@ -72,6 +73,7 @@ public class CalendarNotesListAdapter extends RecyclerView.Adapter<CalendarNotes
                 AlertDialog alert = builder.create();
                 alert.show();
             });
+
             itemView.setOnClickListener(v -> listener.onItemClick(event));
         }
 

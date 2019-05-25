@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -17,9 +16,7 @@ import com.example.businessplanner.R;
 import com.example.businessplanner.data.entities.Customer;
 import com.example.businessplanner.domain.DatabaseManager;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdapter.ViewHolder> {
     private LayoutInflater inflater;
@@ -29,7 +26,9 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(Customer customer);
+        void onEditClick(Customer customer);
+
+        void onCustomerClick(Customer customer);
     }
 
     CustomersListAdapter(Context context, List<Customer> customers, OnItemClickListener listener) {
@@ -60,6 +59,7 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
     class ViewHolder extends RecyclerView.ViewHolder {
         final ImageView customersImage;
         final ImageView delete;
+        final ImageView edit;
         final TextView customersName;
         final TextView customersPhone;
         final TextView customersEmail;
@@ -75,7 +75,6 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
                         .load(Integer.parseInt(customer.imageName))
                         .apply(RequestOptions.circleCropTransform())
                         .into(customersImage);
-                Toast.makeText(context, "Image loaded", Toast.LENGTH_SHORT).show();
             }
 
             customersName.setText(customer.customer_name);
@@ -84,29 +83,9 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
             if (!customer.email.equals("0")) {
                 customersEmail.setText(customer.email);
             } else {
-                customersEmail.setText("no email");
+                customersEmail.setText("------");
             }
 
-            /*if (!customer.address.equals("0")) {
-                customersAddress.setText(customer.address);
-            } else {
-                customersAddress.setText("no address");
-            }
-
-            if (customer.profit != 0) {
-                profit.setText(String.valueOf(customer.profit));
-            } else {
-                profit.setText("no profit");
-            }
-
-            if (customer.deal_date == 0) {
-                dealDate.setText("no date");
-            } else {
-                dealDate.setText(formatDate(customer.deal_date));
-            }
-
-            state.setText(customer.state.toString());
-*/
             delete.setOnClickListener(v -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Confirmation")
@@ -121,12 +100,10 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
                 AlertDialog alert = builder.create();
                 alert.show();
             });
-            itemView.setOnClickListener(v -> listener.onItemClick(customer));
-        }
 
-        public String formatDate(long date) {
-            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.UK);
-            return format.format(date);
+            edit.setOnClickListener(v -> listener.onEditClick(customer));
+
+            itemView.setOnClickListener(v -> listener.onCustomerClick(customer));
         }
 
         ViewHolder(View view) {
@@ -136,6 +113,7 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
             customersName = view.findViewById(R.id.customer_name);
             customersEmail = view.findViewById(R.id.email_card);
             customersPhone = view.findViewById(R.id.phone_number);
+            edit = view.findViewById(R.id.edit_customer);
         }
     }
 }
