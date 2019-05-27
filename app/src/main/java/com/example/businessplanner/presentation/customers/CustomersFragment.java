@@ -35,6 +35,11 @@ public class CustomersFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         manager = new DatabaseManager(requireContext());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         setAdapter();
     }
 
@@ -59,6 +64,9 @@ public class CustomersFragment extends Fragment {
                 getChildFragmentManager().beginTransaction().add(R.id.customers_layout, ordersFragment).commit();
             }
         });
+
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Nullable
@@ -68,8 +76,6 @@ public class CustomersFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recycler_view_customers);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
 
         toolbar = view.findViewById(R.id.toolbar_customers);
         toolbar.setNavigationOnClickListener(v -> {

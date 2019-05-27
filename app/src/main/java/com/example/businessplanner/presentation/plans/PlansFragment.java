@@ -38,11 +38,19 @@ public class PlansFragment extends Fragment {
     private DatabaseManager databaseManager;
     private FloatingActionButton fab;
 
+    private MenuItem actionSearch;
+    private SearchView searchView;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         databaseManager = new DatabaseManager(requireContext());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         setAdapter();
     }
 
@@ -54,6 +62,8 @@ public class PlansFragment extends Fragment {
             intent.putExtra("plan_id", plan.id);
             startActivityForResult(intent, REQUEST_CODE);
         });
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Nullable
@@ -62,8 +72,6 @@ public class PlansFragment extends Fragment {
         View view = inflater.inflate(R.layout.plans_fragment, container, false);
         recyclerView = view.findViewById(R.id.recycler_view_plans);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
 
         toolbar = view.findViewById(R.id.toolbar_plans);
         toolbar.setNavigationOnClickListener(v -> {
@@ -75,6 +83,8 @@ public class PlansFragment extends Fragment {
 
         fab = view.findViewById(R.id.fab_plans);
         fab.setOnClickListener(v -> {
+            searchView.setQuery("", false);
+            searchView.clearFocus();
             Intent intent = new Intent(getActivity(), InputNoteActivity.class);
             startActivityForResult(intent, REQUEST_CODE);
         });
@@ -82,8 +92,8 @@ public class PlansFragment extends Fragment {
     }
 
     private void processMenuItems(Toolbar toolbar) {
-        MenuItem actionSearch = toolbar.getMenu().findItem(R.id.action_search);
-        SearchView searchView = (SearchView) actionSearch.getActionView();
+        actionSearch = toolbar.getMenu().findItem(R.id.action_search);
+        searchView = (SearchView) actionSearch.getActionView();
 
         searchView.setQueryHint("Search");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

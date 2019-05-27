@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -57,6 +58,7 @@ public class CalendarFragment extends Fragment {
             startActivityForResult(intent, REQUEST_CODE);
         });
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Nullable
@@ -65,14 +67,9 @@ public class CalendarFragment extends Fragment {
         View view = inflater.inflate(R.layout.calendar_fragment, container, false);
 
         calendarView = view.findViewById(R.id.calendar_view);
-
         calendarView.setCurrentDate(Calendar.getInstance().getTime());
         calendarView.setSelectedDate(Calendar.getInstance().getTime());
-        addDecorators();
-        calendarView.setOnDateChangedListener((widget, date, selected) -> {
-            setAdapter(date.getCalendar());
-            adapter.notifyDataSetChanged();
-        });
+        setCalendar();
 
         recyclerView = view.findViewById(R.id.recycler_view_calendar);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -99,6 +96,19 @@ public class CalendarFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setCalendar();
+    }
+
+    public void setCalendar() {
+        addDecorators();
+        calendarView.setOnDateChangedListener((widget, date, selected) -> {
+            setAdapter(date.getCalendar());
+        });
     }
 
     public void addDecorators() {
@@ -130,7 +140,7 @@ public class CalendarFragment extends Fragment {
         List<CalendarEvent> calendarEvents = databaseManager.getCalendarEvents();
         for (CalendarEvent calendarEvent : calendarEvents) {
             SimpleDateFormat format = new SimpleDateFormat("EEE dd MMM yyyy", Locale.UK);
-            Date date = null;
+            Date date;
             try {
                 date = format.parse(calendarEvent.date);
                 Calendar cal = Calendar.getInstance();

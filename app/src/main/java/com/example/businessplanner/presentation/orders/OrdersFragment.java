@@ -33,6 +33,11 @@ public class OrdersFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         manager = new DatabaseManager(requireContext());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         setAdapter();
     }
 
@@ -48,6 +53,8 @@ public class OrdersFragment extends Fragment {
             intent.putExtra("order_id", order.id);
             startActivityForResult(intent, REQUEST_CODE);
         });
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Nullable
@@ -57,8 +64,7 @@ public class OrdersFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recycler_view_orders);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        setAdapter();
 
         Toolbar toolbar = view.findViewById(R.id.toolbar_orders);
         toolbar.setNavigationOnClickListener(v -> {
