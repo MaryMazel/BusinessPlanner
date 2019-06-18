@@ -149,7 +149,6 @@ public class CustomerProfileActivity extends AppCompatActivity {
                 imageName = "no picture";
             }
 
-            //long profit = Validator.validateProfit(profitString);
             Intent intent = getIntent();
             if (intent.hasExtra("customer_id")) {
                 Long id = getIntent().getLongExtra("customer_id", 123456789);

@@ -1,6 +1,7 @@
 package com.example.businessplanner.presentation.customers;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.example.businessplanner.R;
 import com.example.businessplanner.data.entities.Customer;
+import com.example.businessplanner.data.entities.Order;
 import com.example.businessplanner.domain.DatabaseManager;
 import com.example.businessplanner.presentation.MainActivity;
 import com.example.businessplanner.presentation.orders.OrdersFragment;
@@ -55,13 +57,27 @@ public class CustomersFragment extends Fragment {
 
             @Override
             public void onCustomerClick(Customer customer) {
-                Bundle bundle = new Bundle();
-                bundle.putString("customer", String.valueOf(customer.id));
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                builder.setTitle("Confirmation")
+                        .setMessage("Do you really want to open orders of " + customer.customer_name + "?")
+                        .setNegativeButton("No",
+                                (dialog, id) -> dialog.cancel())
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            List<Order> orders = manager.getCustomersOrders(customer.id);
+                            if (orders.size() == 0) {
+                                alertNoOrders();
+                            } else {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("customer", String.valueOf(customer.id));
 
-                OrdersFragment ordersFragment = new OrdersFragment();
-                ordersFragment.setArguments(bundle);
+                                OrdersFragment ordersFragment = new OrdersFragment();
+                                ordersFragment.setArguments(bundle);
 
-                getChildFragmentManager().beginTransaction().add(R.id.customers_layout, ordersFragment).commit();
+                                getChildFragmentManager().beginTransaction().add(R.id.customers_layout, ordersFragment).commit();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
 
@@ -91,6 +107,16 @@ public class CustomersFragment extends Fragment {
         return view;
     }
 
+    public void alertNoOrders() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Warning")
+                .setMessage("There is no orders of such customer yet")
+                .setNegativeButton("OK",
+                        (dialog, id) -> dialog.cancel());
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     @Override
     public void onActivityResult(int requestCode, int result, Intent data) {
         super.onActivityResult(requestCode, result, data);
@@ -106,13 +132,27 @@ public class CustomersFragment extends Fragment {
 
                 @Override
                 public void onCustomerClick(Customer customer) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("customer", String.valueOf(customer.id));
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                    builder.setTitle("Confirmation")
+                            .setMessage("Do you really want to open orders of " + customer.customer_name + "?")
+                            .setNegativeButton("No",
+                                    (dialog, id) -> dialog.cancel())
+                            .setPositiveButton("Yes", (dialog, which) -> {
+                                List<Order> orders = manager.getCustomersOrders(customer.id);
+                                if (orders.size() == 0) {
+                                    alertNoOrders();
+                                } else {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("customer", String.valueOf(customer.id));
 
-                    OrdersFragment ordersFragment = new OrdersFragment();
-                    ordersFragment.setArguments(bundle);
+                                    OrdersFragment ordersFragment = new OrdersFragment();
+                                    ordersFragment.setArguments(bundle);
 
-                    getChildFragmentManager().beginTransaction().add(R.id.customers_layout, ordersFragment).commit();
+                                    getChildFragmentManager().beginTransaction().add(R.id.customers_layout, ordersFragment).commit();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
             }));
         }
