@@ -1,3 +1,88 @@
 <resources>
     <string name="app_name">BusinessPlanner</string>
+    <string name="Orders">My orders</string>
+    <string name="Customers">Customers</string>
+    <string name="Calendar">Calendar</string>
+    <string name="Plans">My plans</string>
+    <string name="business_planner">Business Planner</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="input_your_plan_here">Input your plan here</string>
+    <string name="save">Save</string>
+    <string name="title">Title</string>
+    <string name="note">Note</string>
+    <string name="search">Search</string>
+    <string name="download">Download</string>
+    <string name="write_a_note">Write a note</string>
+    <string name="no_note">No note</string>
+
+    <array name="weekDays">
+        <item>Sun</item>
+        <item>Mon</item>
+        <item>Tues</item>
+        <item>Wed</item>
+        <item>Thur</item>
+        <item>Fri</item>
+        <item>Sat</item>
+    </array>
+
+    <array name="monthLabels">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </array>
+
+    <array name="customer_logos">
+        <item>Kharkovoblenergo</item>
+        <item>Kievoblenergo</item>
+        <item>Khersonoblenergo</item>
+        <item>Zhylkomservice</item>
+        <item>OSBB</item>
+        <item>Factory</item>
+    </array>
+
+    <string name="phone">Phone:</string>
+    <string name="email">Email:</string>
+    <string name="address">Address:</string>
+    <string name="profit">Profit:</string>
+    <string name="deal_date">Deal date:</string>
+    <string name="state">State:</string>
+    <string name="name_and_surname">Name and Surname</string>
+    <string name="phone_number">Phone number</string>
+    <string name="email_input">Email</string>
+    <string name="address_input">Address</string>
+    <string name="state_input">State</string>
+    <string name="profit_input">Profit</string>
+    <string name="deal_date_input">Deal date</string>
+    <string name="no_image_yet">No image yet</string>
+    <string name="pick_date">Pick date</string>
+    <string name="order">Order #</string>
+    <string name="customer">Customer:</string>
+    <string name="description">Description:</string>
+    <string name="description_input">Description</string>
+    <string name="order_type">Order type:</string>
+    <string name="network_owner">Network owner:</string>
+    <string name="reliability">Reliability:</string>
+    <string name="attachment_spot">Attachment spot:</string>
+    <string name="attachment_spot_input">Attachment spot</string>
+    <string name="meter_device_type">Meter device type:</string>
+    <string name="meter_device_type_input">Meter device type</string>
+    <string name="transformers">Transformers:</string>
+    <string name="capacity">Capacity:</string>
+    <string name="capacity_input">Capacity, kW</string>
+    <string name="voltage">Voltage:</string>
+    <string name="voltage_input">Voltage, kV</string>
+    <string name="i">I</string>
+    <string name="ii">II</string>
+    <string name="iii">III</string>
+
 </resources>
